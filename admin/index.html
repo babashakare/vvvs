@@ -7671,7 +7671,7 @@
                             <div class="network-card-title">
                                 <span class="status-indicator" id="status-ipip"></span>
                                 <div class="title-text">
-                                    <div class="title-main">国内测试</div>
+                                    <div class="title-main">آزمایش داخلی</div>
                                     <div class="title-subtitle">CN-Test</div>
                                 </div>
                             </div>
@@ -7680,7 +7680,7 @@
                                 <div class="location-text">
                                     <span id="ipip-country" class="country-text">-</span>
                                 </div>
-                                <div class="network-tip">· 您访问国内站点所使用的IP</div>
+                                <div class="network-tip">• آدرس IP که برای دسترسی به وب‌سایت‌های داخلی استفاده می‌کنید </div>
                             </div>
                         </div>
 
@@ -10971,7 +10971,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
 
                 function renderNetworkWarningNonCnRow(family, info) {
                     const ip = info && info.ip ? info.ip : "未获取";
-                    const country = info && info.country ? String(info.country).toUpperCase() : "未知";
+                    const country = info && info.country ? String(info.country).toUpperCase() : "ناشناخته";
                     return `<div class="network-warning-row">
                         <span class="network-warning-family">${escapeHtml(family.toUpperCase())}</span>
                         <span class="network-warning-ip">${escapeHtml(ip)}</span>
@@ -11017,7 +11017,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
                         endpoint,
                         ip: data.ip || "",
                         ipType: data.ipType || family,
-                        country: data.country || "未知",
+                        country: data.country || "ناشناخته",
                         cnIspCode: data.cnIspCode || "",
                         preferredType: preferredTypeFromCnIspCode(data.cnIspCode),
                         colo: data.colo || "",
@@ -11088,7 +11088,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
                     value.textContent = maskIpForDisplay(info.ip, info.ipType || family);
                     if (note) note.textContent = info.preferredType || preferredTypeFromCnIspCode(info.cnIspCode);
                     tag.className = "tag ok";
-                    tag.textContent = `${info.country || "未知"} · ${String(info.cnIspCode || "unknown").toUpperCase()}`;
+                    tag.textContent = `${info.country || "ناشناخته"} · ${String(info.cnIspCode || "unknown").toUpperCase()}`;
                 }
 
                 function maskIpForDisplay(ip, family) {
@@ -11338,7 +11338,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
                     const official = isOfficialPreferredIp(data);
                     const responseIpType = data.ipType || "";
                     const type = official ? officialPreferredType(data) : "优选反代";
-                    const country = official ? countryFromColo(data.colo) : (data.country || "未知");
+                    const country = official ? countryFromColo(data.colo) : (data.country || "ناشناخته");
 
                     return {
                         address,
@@ -11434,9 +11434,9 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
                 }
 
                 function countryFromColo(colo) {
-                    if (!colo) return "未知";
+                    if (!colo) return "ناشناخته";
                     const match = state.locationsByIata.get(String(colo).toUpperCase());
-                    return match && match.cca2 ? match.cca2 : "未知";
+                    return match && match.cca2 ? match.cca2 : "ناشناخته";
                 }
 
                 async function startSingleSpeedTest(index) {
@@ -11632,10 +11632,10 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
                         return `<tr class="result-row${selected ? " is-selected" : ""}" data-result-id="${escapeHtml(id)}">
           <td class="selection-cell"><input type="checkbox" data-select-id="${escapeHtml(id)}" aria-label="选择 ${safeAddress}" ${selected ? "checked" : ""}></td>
           <td class="ip-cell"><button class="copy-address-btn" type="button" data-copy-address="${safeAddress}" title="点击复制" aria-label="复制 ${safeAddress}">${safeAddress}</button></td>
-          <td>${escapeHtml(item.ipType || "未知")}</td>
+          <td>${escapeHtml(item.ipType || "ناشناخته")}</td>
           <td>${escapeHtml(item.type)}</td>
           <td>${renderCountryCell(item.country)}</td>
-          <td>${escapeHtml(item.colo || "未知")}</td>
+          <td>${escapeHtml(item.colo || "ناشناخته")}</td>
           <td>${item.latency}ms</td>
           <td>${renderSpeedCell(item, index)}</td>
         </tr>`;
@@ -11884,10 +11884,10 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
                     const header = ["优选IP", "IP类型", "优选类型", "国家/地区", "数据中心", "延迟(ms)", "速度(Mbps)"];
                     const csvRows = rows.map((item) => [
                         item.address || "",
-                        item.ipType || "未知",
+                        item.ipType || "ناشناخته",
                         item.type || "",
-                        item.country || "未知",
-                        item.colo || "未知",
+                        item.country || "ناشناخته",
+                        item.colo || "ناشناخته",
                         Number.isFinite(item.latency) ? item.latency : "",
                         formatSpeedForCsv(item)
                     ]);
@@ -12106,7 +12106,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
                 }
 
                 function renderCountryCell(country) {
-                    const text = String(country || "未知").trim() || "未知";
+                    const text = String(country || "ناشناخته").trim() || "ناشناخته";
                     const countryCode = /^[a-zA-Z]{2}$/.test(text) ? text.toLowerCase() : "";
                     const flag = countryCode
                         ? `<img class="country-flag" src="https://ipdata.co/flags/${countryCode}.png" alt="" loading="lazy" onerror="this.remove()">`
@@ -14940,7 +14940,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
 
                 const badgeText = parsedHeading.versionText
                     ? (parsedHeading.versionText.startsWith('v') ? parsedHeading.versionText : `v${parsedHeading.versionText}`)
-                    : '未知版本';
+                    : 'ناشناخته版本';
                 const dateHtml = parsedHeading.dateText
                     ? `<span class="changelog-version-date">${escapeMarkdownHtml(parsedHeading.dateText)}</span>`
                     : '';
@@ -15001,7 +15001,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
                     );
                 } else if (renderResult.versionEntryCount > 0) {
                     console.log(
-                        `[更新日志] 当前版本未匹配到日志条目: ${renderResult.currentVersionDisplayText || '未知版本'}，日志共${renderResult.versionEntryCount}条`
+                        `[更新日志] 当前版本未匹配到日志条目: ${renderResult.currentVersionDisplayText || 'ناشناخته版本'}，日志共${renderResult.versionEntryCount}条`
                     );
                 }
                 return;
@@ -15029,7 +15029,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
                         );
                     } else if (renderResult.versionEntryCount > 0) {
                         console.log(
-                            `[更新日志] 当前版本未匹配到日志条目: ${renderResult.currentVersionDisplayText || '未知版本'}，日志共${renderResult.versionEntryCount}条`
+                            `[更新日志] 当前版本未匹配到日志条目: ${renderResult.currentVersionDisplayText || 'ناشناخته版本'}，日志共${renderResult.versionEntryCount}条`
                         );
                     }
                 } catch (error) {
@@ -17218,7 +17218,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
 
         async function refreshConfig() {
             await loadConfig();
-            const loadTime = currentConfig.加载时间 || '未知';
+            const loadTime = currentConfig.加载时间 || 'ناشناخته';
             showToast(`配置已刷新 (加载时间: ${loadTime})`, 'success');
         }
 
@@ -18432,9 +18432,9 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
 
                 recentLogs.forEach(log => {
                     const logType = translateLogType(log.TYPE, log.UA);
-                    const cc = log.CC || '未知';
+                    const cc = log.CC || 'ناشناخته';
                     const timeStr = formatTime(log.TIME);
-                    const ip = log.IP || '未知';
+                    const ip = log.IP || 'ناشناخته';
 
                     if (isMobile) {
                         // 移动设备：不显示地区
@@ -18476,10 +18476,10 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
 
                 sortedLogs.forEach(log => {
                     const logType = translateLogType(log.TYPE, log.UA);
-                    const cc = log.CC || '未知';
-                    const asn = log.ASN || '未知';
+                    const cc = log.CC || 'ناشناخته';
+                    const asn = log.ASN || 'ناشناخته';
                     const timeStr = formatTime(log.TIME);
-                    const ip = log.IP || '未知';
+                    const ip = log.IP || 'ناشناخته';
                     const url = log.URL || '无';
                     const ua = log.UA ? log.UA.substring(0, 60) : '无';
 
@@ -18634,14 +18634,14 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
                     statusEl.style.background = 'linear-gradient(135deg, #ef4444 0, #dc2626 100%)';
                     statusEl.style.padding = '16px';
                     statusEl.style.borderRadius = '8px';
-                    statusEl.innerHTML = `❌ <strong>代理无效</strong><br/><small style="opacity: 0.9;">${data.error || '未知错误'}</small>`;
+                    statusEl.innerHTML = `❌ <strong>代理无效</strong><br/><small style="opacity: 0.9;">${data.error || 'ناشناخته错误'}</small>`;
                     document.getElementById('proxyConfirmBtn').disabled = true;
                     document.getElementById('proxyConfirmBtn').style.opacity = '0.5';
                 } else if (data.success === true) {
-                    const ip = data.ip || '未知';
-                    const loc = data.loc || '未知';
+                    const ip = data.ip || 'ناشناخته';
+                    const loc = data.loc || 'ناشناخته';
                     const responseTime = data.responseTime || 0;
-                    const responseTimeDisplay = responseTime > 0 ? `${responseTime}ms` : '未知';
+                    const responseTimeDisplay = responseTime > 0 ? `${responseTime}ms` : 'ناشناخته';
 
                     statusEl.style.background = 'linear-gradient(135deg, #10b981 0, #059669 100%)';
                     statusEl.style.padding = '16px';
@@ -18787,7 +18787,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
             if (cleanIp.includes('*') && targetElement && targetElement.dataset && targetElement.dataset.rawValue) {
                 cleanIp = String(targetElement.dataset.rawValue || '').trim();
             }
-            if (!cleanIp || cleanIp === '未知') {
+            if (!cleanIp || cleanIp === 'ناشناخته') {
                 return;
             }
 
@@ -19039,7 +19039,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
 
         function extractChainProxyCountryCode(loc) {
             const value = String(loc || '').trim().toUpperCase();
-            if (!value || value === '未知') return '';
+            if (!value || value === 'ناشناخته') return '';
 
             const bracketMatch = value.match(/\[([A-Z]{2})\]/);
             if (bracketMatch) return bracketMatch[1];
@@ -19072,10 +19072,10 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
                 protocol,
                 proxyAddress
             } = options || {};
-            const safeIp = escapeMarkdownHtml(ip || '未知');
-            const safeLoc = escapeMarkdownHtml(loc || '未知');
-            const safeResponseTime = escapeMarkdownHtml(responseTimeDisplay || '未知');
-            const safeBadgeRegion = escapeMarkdownHtml(extractChainProxyCountryCode(loc) || loc || '未知');
+            const safeIp = escapeMarkdownHtml(ip || 'ناشناخته');
+            const safeLoc = escapeMarkdownHtml(loc || 'ناشناخته');
+            const safeResponseTime = escapeMarkdownHtml(responseTimeDisplay || 'ناشناخته');
+            const safeBadgeRegion = escapeMarkdownHtml(extractChainProxyCountryCode(loc) || loc || 'ناشناخته');
             const safePreferred = escapeMarkdownHtml(buildChainProxyPreferredEndpoint(preferredHost, preferredPort));
             const safeProtocol = escapeMarkdownHtml(protocol || 'socks5');
             const safeProtocolLabel = escapeMarkdownHtml(`${protocol || 'socks5'}代理`);
@@ -19171,7 +19171,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
                 }
 
                 if (data.success === false) {
-                    showChainProxyStatus(`❌ <strong>代理无效</strong><br><small style="opacity: 0.9;">${escapeMarkdownHtml(data.error || '未知错误')}</small>`, 'error', true);
+                    showChainProxyStatus(`❌ <strong>代理无效</strong><br><small style="opacity: 0.9;">${escapeMarkdownHtml(data.error || 'ناشناخته错误')}</small>`, 'error', true);
                     return;
                 }
 
@@ -19182,10 +19182,10 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
                     return;
                 }
 
-                const ip = data.ip || '未知';
-                const loc = data.loc || '未知';
+                const ip = data.ip || 'ناشناخته';
+                const loc = data.loc || 'ناشناخته';
                 const responseTime = data.responseTime || 0;
-                const responseTimeDisplay = responseTime > 0 ? `${responseTime}ms` : '未知';
+                const responseTimeDisplay = responseTime > 0 ? `${responseTime}ms` : 'ناشناخته';
                 const defaultNodeName = buildChainProxyDefaultNodeName(loc, protocol);
                 const nodeNameInput = document.getElementById('chainProxyNodeName');
                 if (nodeNameInput && !String(nodeNameInput.value || '').trim()) {
@@ -20110,7 +20110,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
                 const getMeResult = await requestTelegram('getMe');
                 const getMeData = getMeResult.data;
                 if (!getMeData.ok) {
-                    throw new Error('Bot Token 无效: ' + (getMeData.description || '未知错误'));
+                    throw new Error('Bot Token 无效: ' + (getMeData.description || 'ناشناخته错误'));
                 }
 
                 // 第二步：通过Bot Token向Chat ID推送测试消息
@@ -20121,7 +20121,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
                 const sendResult = await requestTelegram('sendMessage', sendUrlParams, getMeResult.base);
                 const sendData = sendResult.data;
                 if (!sendData.ok) {
-                    throw new Error('Chat ID 无效: ' + (sendData.description || '未知错误'));
+                    throw new Error('Chat ID 无效: ' + (sendData.description || 'ناشناخته错误'));
                 }
 
                 console.log(`[TelegramBot] 验证成功，当前接口: ${sendResult.base}`);
@@ -20194,7 +20194,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
                     }, 1000);
                 } else {
                     const errorData = await response.json();
-                    showToast('❌ 保存失败: ' + (errorData.error || '未知错误'), 'error');
+                    showToast('❌ 保存失败: ' + (errorData.error || 'ناشناخته错误'), 'error');
                     confirmBtn.disabled = false;
                     confirmBtn.textContent = '保存';
                 }
@@ -20450,7 +20450,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
                     }, 1000);
                 } else {
                     const errorData = await response.json();
-                    showToast('❌ 保存失败: ' + (errorData.error || '未知错误'), 'error');
+                    showToast('❌ 保存失败: ' + (errorData.error || 'ناشناخته错误'), 'error');
                     confirmBtn.disabled = false;
                     confirmBtn.textContent = '保存';
                 }
@@ -20514,7 +20514,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
                         location.reload();
                     }, 1000);
                 } else {
-                    showToast('❌ 清除失败: ' + (data.message || '未知错误'), 'error');
+                    showToast('❌ 清除失败: ' + (data.message || 'ناشناخته错误'), 'error');
                 }
             } catch (error) {
                 showToast('❌ 清除出错: ' + error.message, 'error');
@@ -20549,7 +20549,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
                         location.reload();
                     }, 1000);
                 } else {
-                    showToast('❌ 清除失败: ' + (data.message || '未知错误'), 'error');
+                    showToast('❌ 清除失败: ' + (data.message || 'ناشناخته错误'), 'error');
                 }
             } catch (error) {
                 showToast('❌ 清除出错: ' + error.message, 'error');
@@ -21275,7 +21275,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
 
         function maskNetworkIpValue(ip) {
             const value = String(ip || '').trim();
-            if (!value || value === '未知') return value;
+            if (!value || value === 'ناشناخته') return value;
 
             if (value.includes('.') && !value.includes(':')) {
                 const parts = value.split('.');
@@ -21306,7 +21306,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
 
         function maskNetworkLocationValue(location) {
             const value = String(location || '').trim();
-            if (!value || value === '未知') return value;
+            if (!value || value === 'ناشناخته') return value;
 
             const tokens = value.split(/\s+/).filter(Boolean);
             if (!tokens.length) return value;
@@ -21610,7 +21610,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
         }
 
         function formatIpInfoLocation(info) {
-            const countryCode = String(info?.country_code || '未知').trim() || '未知';
+            const countryCode = String(info?.country_code || 'ناشناخته').trim() || 'ناشناخته';
             const rawAsn = info?.asn;
             const asnText = rawAsn === undefined || rawAsn === null
                 ? ''
@@ -21623,7 +21623,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
                 ''
             ).trim();
 
-            return `${countryCode} ${asnText} ${asnName}`.trim() || '未知';
+            return `${countryCode} ${asnText} ${asnName}`.trim() || 'ناشناخته';
         }
 
         function createIpProbeRequestTask(sourceConfig) {
@@ -21697,7 +21697,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
             const testSources = [
                 {
                     type: 'head',
-                    name: '字节跳动',
+                    name: 'بایت دنس',
                     url: 'https://perfops2.byte-test.com/500b-bench.jpg',
                     ipHeader: 'X-Request-Ip'
                 },
@@ -21758,7 +21758,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
                 return;
             }
 
-            const fallbackIp = String(fastestSuccess.requestIp || '未知').trim() || '未知';
+            const fallbackIp = String(fastestSuccess.requestIp || 'ناشناخته').trim() || 'ناشناخته';
             setNetworkFieldValue('ipip-ip', fallbackIp, 'ip');
             clearNetworkFieldValue('ipip-country');
             applyNetworkCardFlag('ipip-country');
@@ -21770,16 +21770,16 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
 
             try {
                 const info = await fetchIpInfoByIp(fastestSuccess.requestIp);
-                const ip = String(info.ip || fastestSuccess.requestIp || '未知').trim();
+                const ip = String(info.ip || fastestSuccess.requestIp || 'ناشناخته').trim();
                 const location = formatIpInfoLocation(info);
 
                 setNetworkFieldValue('ipip-ip', ip, 'ip');
-                setNetworkFieldValue('ipip-country', location || '未知', 'location');
+                setNetworkFieldValue('ipip-country', location || 'ناشناخته', 'location');
                 applyNetworkCardFlag('ipip-country');
                 setStatus('status-ipip', 'success');
                 console.log(`[国内测试] 成功: IP=${ip}, 位置=${location}, 来源=${fastestSuccess.source}`);
             } catch (detailError) {
-                setNetworkFieldValue('ipip-country', '未知', 'location');
+                setNetworkFieldValue('ipip-country', 'ناشناخته', 'location');
                 applyNetworkCardFlag('ipip-country');
                 setStatus('status-ipip', 'success');
                 console.warn(`[国内测试] 已获取IP=${fallbackIp}，但查询详细信息失败:`, detailError);
@@ -21793,11 +21793,11 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
             const apis = [
                 {
                     url: `https://api.ipapi.is`,
-                    parse: d => ({ ip: d.ip, loc: `${d.location?.country_code || '未知'} AS${d.asn?.asn || ''} ${d.asn?.org || ''}`.trim() })
+                    parse: d => ({ ip: d.ip, loc: `${d.location?.country_code || 'ناشناخته'} AS${d.asn?.asn || ''} ${d.asn?.org || ''}`.trim() })
                 },
                 {
                     url: `https://api.cmliussss.net/api/ipinfo`,
-                    parse: d => ({ ip: d.ip, loc: `${d.country_code || '未知'} ${d.asn || ''} ${d.as_name || ''}`.trim() })
+                    parse: d => ({ ip: d.ip, loc: `${d.country_code || 'ناشناخته'} ${d.asn || ''} ${d.as_name || ''}`.trim() })
                 }
             ];
 
@@ -21813,7 +21813,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
                         });
                         if (!response.ok) throw new Error(`HTTP ${response.status}`);
                         const { ip, loc } = api.parse(await response.json());
-                        const edgeIp = ip || '未知';
+                        const edgeIp = ip || 'ناشناخته';
 
                         return { edgeIp, loc, url: api.url };
                     })().catch(error => {
@@ -21827,7 +21827,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
                 const { edgeIp, loc } = await Promise.any(requestTasks.map(task => task.promise));
                 requestTasks.forEach(task => task.cancel && task.cancel());
                 setNetworkFieldValue('overseas-ip', edgeIp, 'ip');
-                setNetworkFieldValue('overseas-country', loc || '未知', 'location');
+                setNetworkFieldValue('overseas-country', loc || 'ناشناخته', 'location');
                 applyNetworkCardFlag('overseas-country');
                 setStatus('status-overseas', 'success');
                 console.log(`[国外测试] 成功: IP=${edgeIp}, 位置=${loc}`);
@@ -21893,7 +21893,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
         function formatCloudFlareLocation(data) {
             const country = String(data?.country || '').trim();
             const org = String(data?.org || '').trim();
-            return `${country} ${org}`.trim() || '未知';
+            return `${country} ${org}`.trim() || 'ناشناخته';
         }
 
         function resetCloudFlareSubtitle() {
@@ -21963,7 +21963,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
 
             const activeEntry = cloudFlareEntries[cloudFlareActiveIndex];
             setNetworkFieldValue('cf-ip', activeEntry.ip, 'ip');
-            setNetworkFieldValue('cf-country', activeEntry.loc || '未知', 'location');
+            setNetworkFieldValue('cf-country', activeEntry.loc || 'ناشناخته', 'location');
             applyNetworkCardFlag('cf-country');
             renderCloudFlareSubtitle();
         }
@@ -22157,7 +22157,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
                     throw new Error('all outside entry sources failed');
                 }
 
-                const fallbackIp = String(fastestSuccess.requestIp || '未知').trim() || '未知';
+                const fallbackIp = String(fastestSuccess.requestIp || 'ناشناخته').trim() || 'ناشناخته';
                 setNetworkFieldValue('twitter-ip', fallbackIp, 'ip');
                 clearNetworkFieldValue('twitter-country');
                 applyNetworkCardFlag('twitter-country');
@@ -22167,7 +22167,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
 
                 try {
                     const info = await fetchIpInfoByIp(fastestSuccess.requestIp);
-                    const twIp = String(info.ip || fastestSuccess.requestIp || '未知').trim();
+                    const twIp = String(info.ip || fastestSuccess.requestIp || 'ناشناخته').trim();
                     const twLoc = formatIpInfoLocation(info);
                     setNetworkFieldValue('twitter-ip', twIp, 'ip');
                     setNetworkFieldValue('twitter-country', twLoc, 'location');
@@ -22175,7 +22175,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
                     setStatus('status-twitter', 'success');
                     console.log(`[墙外测试] 成功: IP=${twIp}, 位置=${twLoc}, 来源=${fastestSuccess.providerName}`);
                 } catch (detailError) {
-                    setNetworkFieldValue('twitter-country', '未知', 'location');
+                    setNetworkFieldValue('twitter-country', 'ناشناخته', 'location');
                     applyNetworkCardFlag('twitter-country');
                     setStatus('status-twitter', 'success');
                     console.warn(`[墙外测试] 已获取IP=${fallbackIp}，但查询详细信息失败:`, detailError);
@@ -22240,11 +22240,11 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
             ipElements.forEach(element => {
                 const rawIpText = String(element.dataset.rawValue || element.textContent || '').trim();
 
-                // 跳过已经标记为错误、加载中、未知的元素
+                // 跳过已经标记为错误、加载中、ناشناخته的元素
                 if (element.querySelector('.error') ||
                     element.dataset.displayState === 'error' ||
                     rawIpText === '加载中...' ||
-                    rawIpText === '未知' ||
+                    rawIpText === 'ناشناخته' ||
                     !rawIpText ||
                     element.classList.contains('clickable')) {
                     return;
@@ -22263,8 +22263,8 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
 
                     const rawIp = String(this.dataset.rawValue || this.textContent || '').trim();
 
-                    // 跳过显示"加载中..."或"未知"的元素
-                    if (!rawIp || rawIp === '加载中...' || rawIp === '未知') {
+                    // 跳过显示"加载中..."或"ناشناخته"的元素
+                    if (!rawIp || rawIp === '加载中...' || rawIp === 'ناشناخته') {
                         return;
                     }
 
@@ -22280,7 +22280,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
 
         // 将 IP 类型转换为中文并添加样式
         function formatIpType(type) {
-            if (!type) return '<span class="ip-type-unknown">未知</span>';
+            if (!type) return '<span class="ip-type-unknown">ناشناخته</span>';
 
             const typeMap = {
                 'isp': { text: '住宅', class: 'ip-type-residential' },
@@ -22306,8 +22306,8 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
         // 计算综合滥用评分
         function calculateAbuseScore(companyScore, asnScore, securityFlags = {}) {
             // 如果两个分数都无效，返回null
-            if (!companyScore || companyScore === '未知') companyScore = 0;
-            if (!asnScore || asnScore === '未知') asnScore = 0;
+            if (!companyScore || companyScore === 'ناشناخته') companyScore = 0;
+            if (!asnScore || asnScore === 'ناشناخته') asnScore = 0;
 
             const company = parseFloat(companyScore) || 0;
             const asn = parseFloat(asnScore) || 0;
@@ -22356,7 +22356,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
 
         // 格式化滥用评分为百分比
         function formatAbuseScorePercentage(score) {
-            if (score === null || score === undefined) return '未知';
+            if (score === null || score === undefined) return 'ناشناخته';
 
             const percentage = score * 100;
             return percentage.toFixed(2) + '%';
@@ -22446,8 +22446,8 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
             };
 
             const combinedScore = calculateAbuseScore(companyScore, asnScore, securityFlags);
-            let riskControlHTML = '未知';
-            let riskLevel = '未知';
+            let riskControlHTML = 'ناشناخته';
+            let riskLevel = 'ناشناخته';
             let badgeClass = 'badge-info';
 
             if (combinedScore !== null) {
@@ -22488,15 +22488,15 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
                                     <div class="ip-detail-section-title">📍 基本信息</div>
                                     <div class="ip-detail-item" title="当前查询的公网 IP 地址，用于在互联网上唯一标识设备">
                                         <span class="ip-detail-label">IP 地址</span>
-                                        <span class="ip-detail-value">${data.ip || '未知'}</span>
+                                        <span class="ip-detail-value">${data.ip || 'ناشناخته'}</span>
                                     </div>
                                     <div class="ip-detail-item" title="IP 地址的物理位置，通过 IP 地址段分配数据库推算得出，包括国家/地区、州省和城市信息">
                                         <span class="ip-detail-label">地理位置</span>
-                                        <span class="ip-detail-value">${data.location?.country_code ? `[${data.location.country_code}]` : ''}${data.location?.country || ''} ${[data.location?.state, data.location?.city].filter(Boolean).join('/') || '未知'}</span>
+                                        <span class="ip-detail-value">${data.location?.country_code ? `[${data.location.country_code}]` : ''}${data.location?.country || ''} ${[data.location?.state, data.location?.city].filter(Boolean).join('/') || 'ناشناخته'}</span>
                                     </div>
                                     <div class="ip-detail-item" title="该 IP 地址所在地区使用的标准时区，格式为洲/城市，如 Asia/Shanghai">
                                         <span class="ip-detail-label">时区</span>
-                                        <span class="ip-detail-value">${data.location?.timezone || '未知'}</span>
+                                        <span class="ip-detail-value">${data.location?.timezone || 'ناشناخته'}</span>
                                     </div>
                                     <div class="ip-detail-item" title="IP 的网络类型:【住宅】家庭宽带、【机房】数据中心或云服务器、【商用】企业专线。左侧为运营商分类，右侧为 ASN (自治系统)分类">
                                         <span class="ip-detail-label">运营商 / ASN 类型</span>
@@ -22586,7 +22586,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
                             </div>
                             <div class="ip-detail-popup-item">
                                 <span class="ip-detail-popup-label">国家:</span>
-                                <span class="ip-detail-popup-value">[${data.location?.country_code || '-'}]${data.location?.country || '未知'}</span>
+                                <span class="ip-detail-popup-value">[${data.location?.country_code || '-'}]${data.location?.country || 'ناشناخته'}</span>
                             </div>
                             <div class="ip-detail-popup-item">
                                 <span class="ip-detail-popup-label">落地IP:</span>
@@ -22598,7 +22598,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
                             </div>
                             <div class="ip-detail-popup-item">
                                 <span class="ip-detail-popup-label">运营商:</span>
-                                <span class="ip-detail-popup-value">${data.company?.name || '未知'}</span>
+                                <span class="ip-detail-popup-value">${data.company?.name || 'ناشناخته'}</span>
                             </div>
                         </div>
                     `;
@@ -22746,12 +22746,12 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
                 // 构建 title 信息
                 let titleText = '';
                 if (proxyData) {
-                    const city = proxyData.city || '未知';
-                    const country = proxyData.country || '未知';
-                    const countryName = proxyData.country_cn || '未知';
+                    const city = proxyData.city || 'ناشناخته';
+                    const country = proxyData.country || 'ناشناخته';
+                    const countryName = proxyData.country_cn || 'ناشناخته';
                     const clientIp = proxyData.clientIp || ip;
-                    const asn = proxyData.asn || '未知';
-                    const asOrganization = proxyData.asOrganization || '未知';
+                    const asn = proxyData.asn || 'ناشناخته';
+                    const asOrganization = proxyData.asOrganization || 'ناشناخته';
 
                     titleText = `${city}\n国家: [${country}]${countryName}\n落地IP: ${clientIp}\nASN: ${asn}\n运营商: ${asOrganization}`;
                 }
@@ -23235,7 +23235,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
                 </div>
                 <div class="ip-detail-popup-item">
                     <span class="ip-detail-popup-label">运营商:</span>
-                    <span class="ip-detail-popup-value">${proxyData.asOrganization || '未知'}</span>
+                    <span class="ip-detail-popup-value">${proxyData.asOrganization || 'ناشناخته'}</span>
                 </div>
             `;
             proxyMaps[type].marker.bindPopup(popupContent, { offset: L.point(0, -32) }).openPopup();
@@ -23279,13 +23279,13 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
                             proxy: item.ip,
                             ip: item.ip,
                             country: item.meta?.country || 'Unknown',
-                            country_cn: item.meta?.country_cn || '未知',
+                            country_cn: item.meta?.country_cn || 'ناشناخته',
                             country_en: item.meta?.country_en || 'Unknown',
                             country_emoji: item.meta?.country_emoji || '🏳️',
-                            city: item.meta?.city || '未知',
+                            city: item.meta?.city || 'ناشناخته',
                             clientIp: item.meta?.clientIp || item.ip,
                             asn: item.meta?.asn || 0,
-                            asOrganization: item.meta?.asOrganization || '未知',
+                            asOrganization: item.meta?.asOrganization || 'ناشناخته',
                             continent: item.meta?.continent || 'Unknown',
                             latitude: item.meta?.latitude !== undefined ? item.meta.latitude : (item.meta?.colo?.lat !== undefined ? item.meta.colo.lat : null),
                             longitude: item.meta?.longitude !== undefined ? item.meta.longitude : (item.meta?.colo?.lon !== undefined ? item.meta.colo.lon : null)
