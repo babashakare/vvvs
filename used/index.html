@@ -60,8 +60,8 @@
 <script>
     async function getStats() {
         try {
-            // درخواست مستقیم به آدرسی که در ورکر آزاد کردیم
-            const response = await fetch('/getCloudflareUsage');
+            // یک علامت سوال برای جلوگیری از کش شدن اضافه کردیم
+            const response = await fetch('/getCloudflareUsage?t=' + Date.now());
             const data = await response.json();
             
             if(data.success || data.workers !== undefined) {
