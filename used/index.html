@@ -60,7 +60,7 @@
 <script>
     async function getStats() {
         try {
-            // اطلاعات رو مستقیم از فایل getCloudflareUsage توی گیت‌هاب می‌خونه
+            // درخواست مستقیم به آدرسی که در ورکر آزاد کردیم
             const response = await fetch('/getCloudflareUsage');
             const data = await response.json();
             
