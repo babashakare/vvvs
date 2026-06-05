@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>آمار مصرف کلودفلر</title>
+    <style>
+        body {
+            font-family: Tahoma, Arial, sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .card {
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            width: 320px;
+            text-align: center;
+        }
+        h2 { color: #38bdf8; margin-bottom: 25px; font-size: 20px; }
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #334155;
+        }
+        .value { font-weight: bold; color: #fbbf24; }
+        .total { color: #4ade80; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>📊 وضعیت درخواست‌های کلودفلر</h2>
+    <div class="stat-item">
+        <span>درخواست‌های Workers:</span>
+        <span id="workers" class="value">در حال بارگذاری...</span>
+    </div>
+    <div class="stat-item">
+        <span>درخواست‌های Pages:</span>
+        <span id="pages" class="value">در حال بارگذاری...</span>
+    </div>
+    <div class="stat-item">
+        <span>مجموع کل مصرف:</span>
+        <span id="total" class="value total">در حال بارگذاری...</span>
+    </div>
+    <div class="stat-item">
+        <span>سقف مجاز روزانه:</span>
+        <span id="max" class="value">۱۰۰,۰۰۰</span>
+    </div>
+</div>
+
+<script>
+    async function getStats() {
+        try {
+            // اطلاعات رو مستقیم از فایل getCloudflareUsage توی گیت‌هاب می‌خونه
+            const response = await fetch('/getCloudflareUsage');
+            const data = await response.json();
+            
+            if(data.success || data.workers !== undefined) {
+                document.getElementById('workers').textContent = Number(data.workers).toLocaleString('fa-IR');
+                document.getElementById('pages').textContent = Number(data.pages).toLocaleString('fa-IR');
+                document.getElementById('total').textContent = Number(data.total).toLocaleString('fa-IR');
+                document.getElementById('max').textContent = Number(data.max).toLocaleString('fa-IR');
+            }
+        } catch (error) {
+            document.getElementById('total').textContent = "خطا در دریافت";
+            console.error(error);
+        }
+    }
+    getStats();
+</script>
+
+</body>
+</html>
