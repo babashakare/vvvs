@@ -7660,7 +7660,7 @@
             <!-- 网络信息模块 -->
             <div class="module advanced-module network-detail-collapsed">
                 <div class="module-title" onclick="toggleNetworkModule(this)">
-                    🌍 [جهانی باشه]
+                    🌍 [当前网络信息]
                     <svg class="collapse-icon" viewBox="0 0 24 24" style="transform: rotate(90deg);">
                         <path d="M7 10l5 5 5-5z" />
                     </svg>
@@ -17161,7 +17161,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
             document.querySelectorAll('.module').forEach((module, index) => {
                 const title = module.querySelector('.module-title')?.textContent?.trim() || ('module-' + index);
                 // 不保存"查看操作日志"和"当前网络信息"模块的状态
-                if (title !== '📋 查看操作日志' && title !== '🌍 当前网络信息' && module.id !== 'preferredSubscriptionModule') {
+                if (title !== '📋 查看操作日志' && title !== '🌍 [当前网络信息]' && module.id !== 'preferredSubscriptionModule') {
                     states[title] = !module.classList.contains('collapsed');
                 }
             });
@@ -17183,7 +17183,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@edt-pages.github.io:443?security=tl
                 // "查看操作日志"模块始终保持折叠状态，"当前网络信息"模块始终展开
                 if (title === '📋 查看操作日志') {
                     shouldBeExpanded = false;
-                } else if (title === '🌍 当前网络信息') {
+                } else if (title === '🌍 جهانی') {
                     shouldBeExpanded = true;
                 } else if (module.id === 'preferredSubscriptionModule') {
                     shouldBeExpanded = true;
