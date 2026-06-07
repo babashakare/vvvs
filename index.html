@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control Panel</title>
+	<link rel="stylesheet" href="file/css/plassmafont.css">
+    <link rel="stylesheet" href="file/css/textfont.css">
+    <link rel="stylesheet" href="file/css/style.css">
+</head>
+<body class="ts">
+
+<video autoplay loop muted playsinline class="bg-video">
+    <source src="1.mp4" type="video/mp4">
+    </video>
+
+<div class="panel-wrapper">
+    <div class="panel-card">
+        <h2>وضعیت مصرف امروز منابع</h2>
+        
+        <div id="loading" class="loading">در حال ارتباط ایمن با سرور مرکزی...</div>
+        
+        <div id="dashboard" style="display: none;">
+            <div class="gauges-container">
+                <div class="gauge-wrapper">
+                    <div class="gauge-title">حجم سایت و برنامه</div>
+                    <div class="gauge-chart-svg">
+                        <svg viewBox="0 0 160 160" preserveAspectRatio="xMidYMid meet">
+                            <circle class="circle-bg" cx="80" cy="80" r="70"></circle>
+                            <circle id="req-circle" class="circle-progress stroke-req" cx="80" cy="80" r="70"></circle>
+                        </svg>
+                        <div id="req-val" class="gauge-value">0.00 GB</div>
+                    </div>
+                    <div class="gauge-max">سقف مصرف روزانه: ۶.۰۰ GB</div>
+                </div>
+
+                <div class="gauge-wrapper">
+                    <div class="gauge-title">حجم بک سایت و برنامه</div>
+                    <div class="gauge-chart-svg">
+                        <svg viewBox="0 0 160 160" preserveAspectRatio="xMidYMid meet">
+                            <circle class="circle-bg" cx="80" cy="80" r="70"></circle>
+                            <circle id="event-circle" class="circle-progress stroke-event" cx="80" cy="80" r="70"></circle>
+                        </svg>
+                        <div id="event-val" class="gauge-value">0.00 GB</div>
+                    </div>
+                    <div class="gauge-max">سقف مصرف روزانه: ۱۲.۰۰ GB</div>
+                </div>
+            </div>
+
+            <div class="links-container">
+                <div class="link-btn" onclick="copyLink('https://little-cell-9c2d.soheylmax36-921.workers.dev/sub?token=6740f8599e7074def6cb855a55f2200d')">
+                    <span class="btn-tag">V2ray</span>
+                    <span class="btn-text">کانکشن V2ray</span>
+                </div>
+                <div class="link-btn" onclick="copyLink('https://little-cell-9c2d.soheylmax36-921.workers.dev/sub?token=6740f8599e7074def6cb855a55f2200d&sb')">
+                    <span class="btn-tag">SingBox</span>
+                    <span class="btn-text">کانکشن SingBox</span>
+                </div>
+                <div class="link-btn" onclick="copyLink('https://little-cell-9c2d.soheylmax36-921.workers.dev/sub?token=6740f8599e7074def6cb855a55f2200d&b64')">
+                    <span class="btn-text">کپی همه کانکشن‌ها (Sub)</span>
+                    <span class="btn-tag">ALL</span>
+                </div>
+            </div>
+
+            <div class="social-container">
+                <a href="https://t.me/shekarcity" target="_blank" aria-label="Telegram">
+                    <svg class="social-icon" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
+                    </svg>
+                </a>
+                <a href="https://discord.gg/3crfD8S99V" target="_blank" aria-label="Discord">
+                    <svg class="social-icon" viewBox="0 0 24 24">
+                        <path d="M19.27 4.73A16.48 16.48 0 0 0 15 3.33a.06.06 0 0 0-.06.03c-.38.68-.8 1.55-1.1 2.2a15.26 15.26 0 0 0-3.68 0c-.3-.65-.73-1.52-1.1-2.2a.06.06 0 0 0-.06-.03 16.48 16.48 0 0 0-4.27 1.4c-.01 0-.02.01-.02.02A16.86 16.86 0 0 0 2.05 17c0 .01 0 .02.01.03a16.78 16.78 0 0 0 5.07 2.56.07.07 0 0 0 .07-.02c.42-.58.8-1.2 1.14-1.84a.06.06 0 0 0-.03-.09 11.08 11.08 0 0 1-1.62-.78.07.07 0 0 1-.01-.11c.11-.08.22-.17.33-.25a.07.07 0 0 1 .07-.01c3.11 1.42 6.47 1.42 9.54 0a.07.07 0 0 1 .07.01c.11.09.22.17.33.26a.07.07 0 0 1-.01.11 10.42 10.42 0 0 1-1.62.78.06.06 0 0 0-.03.09c.34.64.72 1.26 1.14 1.84a.07.07 0 0 0 .07 .02 16.74 16.74 0 0 0 5.07-2.56.03.03 0 0 0 .01-.03 16.83 16.83 0 0 0-2.95-12.25.03.03 0 0 0-.02-.02zM8.53 13.93c-.97 0-1.78-.9-1.78-2s.79-2 1.78-2c.99 0 1.79.9 1.78 2 0 1.1-.79 2-1.78 2zm6.94 0c-.97 0-1.78-.9-1.78-2s.79-2 1.78-2c.99 0 1.79.9 1.78 2 0 1.1-.79 2-1.78 2z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+        
+        <div id="toast" class="toast">لینک با موفقیت کپی شد</div>
+    </div>
+</div>
+
+<script>
+const SECRET_PASSWORD = "MySuperSecretKey123!"; 
+const WORKER_URL = "https://broad-wind-35ae.soheylmax36-921.workers.dev/";
+
+function binaryToString(binary) {
+    let str = '';
+    for (let i = 0; i < binary.length; i += 8) {
+        str += String.fromCharCode(parseInt(binary.substr(i, 8), 2));
+    }
+    return str;
+}
+
+async function getCryptoKey(password) {
+    const enc = new TextEncoder();
+    const keyMaterial = await window.crypto.subtle.importKey("raw", enc.encode(password), { name: "PBKDF2" }, false, ["deriveBits", "deriveKey"]);
+    return window.crypto.subtle.deriveKey(
+        { name: "PBKDF2", salt: enc.encode("some_salt"), iterations: 100000, hash: "SHA-256" },
+        keyMaterial, { name: "AES-GCM", length: 256 }, false, ["decrypt"]
+    );
+}
+
+async function getAndDecryptData() {
+    try {
+        const response = await fetch(WORKER_URL);
+        const binaryData = await response.text();
+
+        const hexString = binaryToString(binaryData);
+        const encryptedArray = new Uint8Array(hexString.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
+
+        const key = await getCryptoKey(SECRET_PASSWORD);
+        const iv = new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+
+        const decryptedBuffer = await window.crypto.subtle.decrypt({ name: "AES-GCM", iv: iv }, key, encryptedArray);
+        const dec = new TextDecoder();
+        const [requests, events] = dec.decode(decryptedBuffer).split('|');
+
+        const reqCount = parseInt(requests) || 0;
+        const eventCount = parseInt(events) || 0;
+
+        const reqGB = (reqCount / 100000) * 6;
+        const eventGB = (eventCount / 200000) * 12;
+
+        const reqPercent = Math.min(reqCount / 100000, 1);
+        const eventPercent = Math.min(eventCount / 200000, 1);
+
+        const reqOffset = 220 - (reqPercent * 220);
+        const eventOffset = 220 - (eventPercent * 220);
+
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('dashboard').style.display = 'block';
+        
+        document.getElementById('req-val').innerText = reqGB.toFixed(2) + " GB";
+        document.getElementById('req-circle').style.strokeDashoffset = reqOffset;
+
+        document.getElementById('event-val').innerText = eventGB.toFixed(2) + " GB";
+        document.getElementById('event-circle').style.strokeDashoffset = eventOffset;
+
+    } catch (error) {
+        console.error(error);
+        document.getElementById('loading').innerText = "خطا در بارگذاری و رمزگشایی اطلاعات شبکه!";
+        document.getElementById('loading').style.color = "#f85149";
+    }
+}
+
+function copyLink(link) {
+    navigator.clipboard.writeText(link).then(() => {
+        const toast = document.getElementById('toast');
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2000);
+    });
+}
+
+getAndDecryptData();
+</script>
+
+</body>
+</html>

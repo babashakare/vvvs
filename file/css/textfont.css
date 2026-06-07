@@ -1,0 +1,44 @@
+/* ─── فونت متن ─── */
+.ftet,
+.ts,
+.tsm2 {
+    font-family: "Mbb";
+}
+.ts *{
+    font-family: inherit;
+}
+/* ─── فونت عناوین سایز بزرگ ─── */
+.tsm {
+    direction: rtl;
+    text-align: right;
+    font-family: "Mbb";
+}
+
+/* ─── فونت متن ریز ─── */
+.tss {
+    direction: rtl;
+    text-align: right;
+    margin-top: 20px;
+    font-family: "Ml";
+    font-size: 15px;
+}
+
+/* ─── فونت عنوان صفحه ─── */
+.tsm3 {
+    direction: rtl;
+    text-align: right;
+    font-family: "Dbaner";
+    font-size: 35px;
+}
+
+/* ─── تصویر ─── */
+.imgs {
+    display: block;
+    margin: 0 auto;
+    width: 60%;
+    height: 60%;
+    object-fit: cover;
+}
+.h25{
+    font-size: 50px;
+}

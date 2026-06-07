@@ -1,0 +1,259 @@
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        body { 
+            background-color: #050505; /* فال‌بک در صورت لود نشدن ویدیو */
+            color: #e0e0e0; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* 1. ویدیو پس‌زمینه متحرک */
+        .bg-video {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translateX(-50%) translateY(-50%);
+            z-index: -2;
+            object-fit: cover;
+            opacity: 0.8; /* تنظیم شفافیت ویدیو در کل صفحه */
+        }
+
+        /* 4 & 5. قاب مستطیلی با گوشه‌های گرد و نوار طلایی چرخان */
+        .panel-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 520px;
+            border-radius: 26px;
+            padding: 3px; /* ضخامت نوار طلایی */
+            overflow: hidden;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.9);
+        }
+
+        /* انیمیشن چرخش نوار طلایی */
+        .panel-wrapper::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(
+                transparent, 
+                transparent, 
+                transparent 70%, 
+                #ffaa00 100%
+            );
+            animation: rotateGlow 4s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes rotateGlow {
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 3. کارت اصلی با بک‌گراند دارک و بلور شدید */
+        .panel-card {
+            background: rgba(12, 12, 14, 0.92); /* رنگ بسیار تیره برای دیده نشدن ویدیو */
+            backdrop-filter: blur(40px); /* تاری بسیار بالا */
+            -webkit-backdrop-filter: blur(40px);
+            border-radius: 24px;
+            padding: 40px 25px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        h2 {
+            font-size: clamp(18px, 4vw, 22px);
+            color: #ffaa00; 
+            margin-bottom: 35px; 
+            font-weight: 700;
+            text-shadow: 0 0 15px rgba(255, 170, 0, 0.4); 
+            letter-spacing: 0.5px;
+        }
+
+        .loading { color: #8b949e; font-style: italic; font-size: 14px; padding: 20px; }
+
+        /* 2 & 6. ریسپانسیو بودن گیج‌ها (نیم‌دایره‌ها) */
+        .gauges-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap; /* در موبایل‌های خیلی کوچک می‌شکند */
+        }
+
+        .gauge-wrapper {
+            flex: 1;
+            min-width: 130px; /* حداقل اندازه برای موبایل */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .gauge-title {
+            font-size: clamp(10px, 3vw, 12px);
+            color: #a0a0a0;
+            margin-bottom: 14px;
+            font-weight: 600;
+            letter-spacing: .5px;
+            white-space: nowrap;
+        }
+
+        .gauge-chart-svg {
+            position: relative;
+            width: 100%;
+            max-width: 150px; /* محدودیت در دسکتاپ */
+            aspect-ratio: 16/9; /* حفظ تناسب نیم‌دایره */
+            overflow: hidden;
+        }
+
+        .gauge-chart-svg svg {
+            width: 100%;
+            height: auto;
+            position: absolute;
+            left: 0;
+            top: 0;
+            transform: rotate(180deg);
+        }
+
+        /* محاسبه viewBox ریسپانسیو بر اساس کد قبلی */
+        .circle-bg {
+            fill: none;
+            stroke: #1c1a21;
+            stroke-width: 10;
+            stroke-linecap: round;
+            stroke-dasharray: 220 440;
+            stroke-dashoffset: 0;
+        }
+
+        .circle-progress {
+            fill: none;
+            stroke-width: 10;
+            stroke-linecap: round;
+            stroke-dasharray: 220 440;
+            stroke-dashoffset: 220;
+            transition: stroke-dashoffset 1.5s cubic-bezier(0.4,0,0.2,1);
+        }
+
+        .stroke-req { stroke: #f0883e; }
+        .stroke-event { stroke: #ffaa00; }
+
+        .gauge-value {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            font-size: clamp(14px, 4vw, 17px);
+            font-weight: 800;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,.6);
+        }
+
+        .gauge-max {
+            font-size: clamp(10px, 2.5vw, 11px);
+            color: #707075;
+            margin-top: 10px;
+            white-space: nowrap;
+        }
+
+        /* 7. چینش دکمه‌های کپی (2 تا بالا، 1 دونه پایین وسط) */
+        .links-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 35px;
+        }
+
+        .link-btn {
+            background: linear-gradient(135deg, rgba(30, 27, 24, 0.6) 0%, rgba(20, 18, 16, 0.8) 100%);
+            border: 1px solid rgba(255, 170, 0, 0.1); 
+            border-radius: 12px;
+            padding: 12px 15px; 
+            display: flex; 
+            flex-direction: column; /* زیر هم برای جاگیری بهتر در موبایل */
+            justify-content: center; 
+            align-items: center;
+            gap: 8px;
+            cursor: pointer; 
+            transition: all 0.3s ease;
+        }
+
+        /* دکمه سوم (کپی همه) در ردیف دوم و وسط */
+        .links-container .link-btn:last-child {
+            grid-column: 1 / -1; /* کل عرض را می‌گیرد */
+            justify-self: center;
+            width: 70%; /* کوچکتر از کل عرض تا وسط قرار بگیرد */
+            flex-direction: row; /* در دکمه تکی المان‌ها روبروی هم باشند */
+            justify-content: space-between;
+        }
+
+        .link-btn:hover {
+            border-color: rgba(240, 136, 62, 0.5);
+            background: linear-gradient(135deg, rgba(40, 35, 30, 0.7) 0%, rgba(28, 24, 21, 0.9) 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(240, 136, 62, 0.1);
+        }
+        .link-btn:active { transform: translateY(0); }
+
+        .btn-text { font-size: clamp(11px, 3vw, 13px); font-weight: 600; color: #e0e0e0; text-align: center; }
+        .btn-tag { font-size: 10px; background: rgba(255, 170, 0, 0.15); color: #ffaa00; padding: 3px 8px; border-radius: 6px; font-weight: bold; }
+
+        /* اگر صفحه خیلی کوچک شد دکمه‌ها زیر هم بیایند */
+        @media (max-width: 420px) {
+            .links-container .link-btn:last-child { width: 100%; }
+        }
+
+        .toast {
+            position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%) translateY(10px);
+            background: #f0883e; color: #000; font-weight: bold; font-size: 12px; padding: 6px 16px;
+            border-radius: 8px; opacity: 0; transition: all 0.3s ease; pointer-events: none;
+            box-shadow: 0 4px 12px rgba(240, 136, 62, 0.4); z-index: 10;
+        }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        /* 8. انیمیشن درخشش مداوم آیکون‌های سوشال */
+        .social-container {
+            display: flex; justify-content: center; gap: 30px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 25px;
+        }
+
+        .social-icon {
+            color: #8b949e; 
+            fill: currentColor; 
+            width: 28px; 
+            height: 28px; 
+            transition: all 0.3s ease;
+            animation: pulseGlow 3s infinite alternate; /* انیمیشن درخشش */
+        }
+
+        /* ایجاد تاخیر برای آیکون دوم تا همزمان با اولی چشمک نزند */
+        .social-container a:nth-child(2) .social-icon {
+            animation-delay: 1.5s;
+        }
+
+        @keyframes pulseGlow {
+            0% {
+                color: #8b949e;
+                filter: drop-shadow(0 0 0 rgba(255, 170, 0, 0));
+                transform: scale(1);
+            }
+            100% {
+                color: #ffaa00;
+                filter: drop-shadow(0 0 12px rgba(255, 170, 0, 0.7));
+                transform: scale(1.1);
+            }
+        }
+
+        .social-icon:hover {
+            color: #fff; filter: drop-shadow(0 0 15px #f0883e); transform: scale(1.2) !important; animation-play-state: paused;
+        }
