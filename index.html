@@ -4,9 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Control Panel</title>
-	<link rel="stylesheet" href="file/css/plassmafont.css">
+    <link rel="stylesheet" href="file/css/plassmafont.css">
     <link rel="stylesheet" href="file/css/textfont.css">
     <link rel="stylesheet" href="file/css/style.css">
+    <style>
+        .login-container { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
+        .input-field {
+            background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 170, 0, 0.3);
+            color: #fff; padding: 12px 15px; border-radius: 8px; font-family: inherit;
+            font-size: 14px; outline: none; transition: 0.3s; text-align: left; direction: ltr; width: 100%; box-sizing: border-box;
+        }
+        .input-field:focus { border-color: rgba(255, 170, 0, 0.8); background: rgba(255, 255, 255, 0.15); }
+        .login-btn {
+            background: linear-gradient(45deg, #ffaa00, #ff7700); color: #111; border: none;
+            padding: 12px; border-radius: 8px; font-weight: bold; font-family: inherit; cursor: pointer; transition: 0.3s;
+        }
+        .login-btn:hover { transform: scale(1.02); box-shadow: 0 0 15px rgba(255, 170, 0, 0.4); }
+        .btn-outline { background: transparent; border: 1px solid rgba(255, 170, 0, 0.5); color: #ffaa00; }
+        .btn-outline:hover { background: rgba(255, 170, 0, 0.1); }
+        .panel-actions { display: flex; gap: 10px; margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; }
+        .panel-actions button { flex: 1; }
+        .quick-admin-box { margin-top: 15px; border: 1px dashed rgba(255, 170, 0, 0.4); padding: 15px; border-radius: 8px; background: rgba(0, 0, 0, 0.2); display: none; }
+    </style>
 </head>
 <body class="ts">
 
@@ -16,61 +35,90 @@
     <div class="panel-card">
         <h2>وضعیت مصرف امروز منابع</h2>
         
-        <div id="loading" class="loading">در حال ارتباط ایمن با سرور مرکزی...</div>
-        
-        <div id="dashboard" style="display: none;">
-            <div class="gauges-container">
-                <div class="gauge-wrapper">
-                    <div class="gauge-title">حجم سایت و برنامه</div>
-                    <div class="gauge-chart-svg">
-                        <svg viewBox="0 0 160 160" preserveAspectRatio="xMidYMid meet">
-                            <circle class="circle-bg" cx="80" cy="80" r="70"></circle>
-                            <circle id="req-circle" class="circle-progress stroke-req" cx="80" cy="80" r="70"></circle>
-                        </svg>
-                        <div id="req-val" class="gauge-value">0.00 GB</div>
-                    </div>
-                    <div class="gauge-max">سقف مصرف روزانه: ۶.۰۰ GB</div>
-                </div>
-
-                <div class="gauge-wrapper">
-                    <div class="gauge-title">حجم بک سایت و برنامه</div>
-                    <div class="gauge-chart-svg">
-                        <svg viewBox="0 0 160 160" preserveAspectRatio="xMidYMid meet">
-                            <circle class="circle-bg" cx="80" cy="80" r="70"></circle>
-                            <circle id="event-circle" class="circle-progress stroke-event" cx="80" cy="80" r="70"></circle>
-                        </svg>
-                        <div id="event-val" class="gauge-value">0.00 GB</div>
-                    </div>
-                    <div class="gauge-max">سقف مصرف روزانه: ۱۲.۰۰ GB</div>
+        <div id="login-section" class="login-container">
+            <div id="step-1">
+                <p style="font-size: 13px; color: #ccc; margin-bottom: 10px;">لطفا رمز اول را وارد کرده و نوع پنل را انتخاب کنید:</p>
+                <input type="text" id="pass1" class="input-field" placeholder="رمز اول" style="margin-bottom: 15px;">
+                <div style="display: flex; gap: 10px;">
+                    <button class="login-btn" onclick="goToStep2('admin')" style="flex: 1;">پنل ادمین</button>
+                    <button class="login-btn btn-outline" onclick="goToStep2('sub')" style="flex: 1;">پنل اشتراک</button>
                 </div>
             </div>
 
-            <div class="links-container">
-                <div class="link-btn" onclick="copyLink('https://little-cell-9c2d.soheylmax36-921.workers.dev/sub?token=6740f8599e7074def6cb855a55f2200d')">
-                    <span class="btn-tag">V2ray</span>
-                    <span class="btn-text">کانکشن V2ray</span>
-                </div>
-                <div class="link-btn" onclick="copyLink('https://little-cell-9c2d.soheylmax36-921.workers.dev/sub?token=6740f8599e7074def6cb855a55f2200d&sb')">
-                    <span class="btn-tag">SingBox</span>
-                    <span class="btn-text">کانکشن SingBox</span>
-                </div>
-                <div class="link-btn" onclick="copyLink('https://little-cell-9c2d.soheylmax36-921.workers.dev/sub?token=6740f8599e7074def6cb855a55f2200d&b64')">
-                    <span class="btn-text">کپی همه کانکشن‌ها (Sub)</span>
-                    <span class="btn-tag">ALL</span>
+            <div id="step-admin" style="display: none;">
+                <p style="font-size: 13px; color: #ccc; margin-bottom: 10px;">لطفا رمز دوم ادمین را وارد کنید:</p>
+                <input type="text" id="admin_pass2" class="input-field" placeholder="رمز دوم ادمین" style="margin-bottom: 15px;">
+                <div style="display: flex; gap: 10px;">
+                    <button class="login-btn" onclick="submitLogin('admin')" style="flex: 1;">ورود به ادمین</button>
+                    <button class="login-btn btn-outline" onclick="backToStep1()" style="flex: 1;">بازگشت</button>
                 </div>
             </div>
 
-            <div class="social-container">
-                <a href="https://t.me/shekarcity" target="_blank" aria-label="Telegram">
-                    <svg class="social-icon" viewBox="0 0 24 24">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
-                    </svg>
-                </a>
-                <a href="https://discord.gg/3crfD8S99V" target="_blank" aria-label="Discord">
-                    <svg class="social-icon" viewBox="0 0 24 24">
-                        <path d="M19.27 4.73A16.48 16.48 0 0 0 15 3.33a.06.06 0 0 0-.06.03c-.38.68-.8 1.55-1.1 2.2a15.26 15.26 0 0 0-3.68 0c-.3-.65-.73-1.52-1.1-2.2a.06.06 0 0 0-.06-.03 16.48 16.48 0 0 0-4.27 1.4c-.01 0-.02.01-.02.02A16.86 16.86 0 0 0 2.05 17c0 .01 0 .02.01.03a16.78 16.78 0 0 0 5.07 2.56.07.07 0 0 0 .07-.02c.42-.58.8-1.2 1.14-1.84a.06.06 0 0 0-.03-.09 11.08 11.08 0 0 1-1.62-.78.07.07 0 0 1-.01-.11c.11-.08.22-.17.33-.25a.07.07 0 0 1 .07-.01c3.11 1.42 6.47 1.42 9.54 0a.07.07 0 0 1 .07.01c.11.09.22.17.33.26a.07.07 0 0 1-.01.11 10.42 10.42 0 0 1-1.62.78.06.06 0 0 0-.03.09c.34.64.72 1.26 1.14 1.84a.07.07 0 0 0 .07 .02 16.74 16.74 0 0 0 5.07-2.56.03.03 0 0 0 .01-.03 16.83 16.83 0 0 0-2.95-12.25.03.03 0 0 0-.02-.02zM8.53 13.93c-.97 0-1.78-.9-1.78-2s.79-2 1.78-2c.99 0 1.79.9 1.78 2 0 1.1-.79 2-1.78 2zm6.94 0c-.97 0-1.78-.9-1.78-2s.79-2 1.78-2c.99 0 1.79.9 1.78 2 0 1.1-.79 2-1.78 2z"/>
-                    </svg>
-                </a>
+            <div id="step-sub" style="display: none;">
+                <p style="font-size: 13px; color: #ccc; margin-bottom: 10px;">لطفا رمز دوم اشتراک (داشبورد) را وارد کنید:</p>
+                <input type="text" id="sub_pass2" class="input-field" placeholder="رمز دوم اشتراک" style="margin-bottom: 15px;">
+                <div style="display: flex; gap: 10px;">
+                    <button class="login-btn" onclick="submitLogin('sub')" style="flex: 1;">ورود به داشبورد</button>
+                    <button class="login-btn btn-outline" onclick="backToStep1()" style="flex: 1;">بازگشت</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="main-content" style="display: none;">
+            <div id="loading" class="loading">در حال بارگذاری اطلاعات میزان مصرف...</div>
+            
+            <div id="dashboard" style="display: none;">
+                <div class="gauges-container">
+                    <div class="gauge-wrapper">
+                        <div class="gauge-title">حجم سایت و برنامه</div>
+                        <div class="gauge-chart-svg">
+                            <svg viewBox="0 0 160 160">
+                                <circle class="circle-bg" cx="80" cy="80" r="70"></circle>
+                                <circle id="req-circle" class="circle-progress stroke-req" cx="80" cy="80" r="70"></circle>
+                            </svg>
+                            <div id="req-val" class="gauge-value">0.00 GB</div>
+                        </div>
+                        <div class="gauge-max">سقف مصرف روزانه: ۶.۰۰ GB</div>
+                    </div>
+
+                    <div class="gauge-wrapper">
+                        <div class="gauge-title">حجم بک سایت و برنامه</div>
+                        <div class="gauge-chart-svg">
+                            <svg viewBox="0 0 160 160">
+                                <circle class="circle-bg" cx="80" cy="80" r="70"></circle>
+                                <circle id="event-circle" class="circle-progress stroke-event" cx="80" cy="80" r="70"></circle>
+                            </svg>
+                            <div id="event-val" class="gauge-value">0.00 GB</div>
+                        </div>
+                        <div class="gauge-max">سقف مصرف روزانه: ۱۲.۰۰ GB</div>
+                    </div>
+                </div>
+
+                <div class="links-container">
+                    <div class="link-btn" onclick="copyDynamicLink('v2ray')">
+                        <span class="btn-tag">V2ray</span>
+                        <span class="btn-text">کانکشن V2ray</span>
+                    </div>
+                    <div class="link-btn" onclick="copyDynamicLink('singbox')">
+                        <span class="btn-tag">SingBox</span>
+                        <span class="btn-text">کانکشن SingBox</span>
+                    </div>
+                    <div class="link-btn" onclick="copyDynamicLink('all')">
+                        <span class="btn-tag">کپی همه کانکشن‌ها (Sub)</span>
+                        <span class="btn-text">ALL</span>
+                    </div>
+                </div>
+
+                <div class="panel-actions">
+                    <button class="login-btn btn-outline" onclick="jumpToAdminQuick()">ادمین پنل</button>
+                    <button class="login-btn btn-outline" style="color: #ff5555; border-color: rgba(255,85,85,0.5);" onclick="logout()">خروج و تغییر سرور</button>
+                </div>
+
+                <div id="quick-admin-box" class="quick-admin-box">
+                    <p style="font-size: 13px; color: #ccc; margin-bottom: 10px;">رمز دوم ادمین در حافظه یافت نشد. لطفا آن را وارد کنید:</p>
+                    <input type="text" id="quick_admin_pass2" class="input-field" placeholder="رمز دوم ادمین" style="margin-bottom: 10px;">
+                    <button class="login-btn" style="width: 100%;" onclick="saveAndGoToAdmin()">ثبت و انتقال به ادمین</button>
+                </div>
             </div>
         </div>
         
@@ -80,105 +128,112 @@
 
 <script>
 // ==========================================
-// 1. اسکریپت انیمیشن پس‌زمینه (ذرات/اتم‌ها)
+// انیمیشن ذرات پس‌زمینه (دست‌نخورده)
 // ==========================================
 const canvas = document.getElementById('particle-canvas');
 const ctx = canvas.getContext('2d');
-
 let particlesArray = [];
-
-// تنظیم اندازه بوم نسبت به صفحه
-function setCanvasSize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-}
-setCanvasSize();
-window.addEventListener('resize', setCanvasSize);
-
-// کلاس ذرات
+function setCanvasSize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+setCanvasSize(); window.addEventListener('resize', setCanvasSize);
 class Particle {
-    constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.size = Math.random() * 2 + 0.5; // اندازه اتم‌ها
-        this.speedX = (Math.random() * 1) - 0.5; // سرعت افقی
-        this.speedY = (Math.random() * 1) - 0.5; // سرعت عمودی
-    }
-    update() {
-        this.x += this.speedX;
-        this.y += this.speedY;
-
-        // برگشتن ذرات در صورت برخورد با لبه‌های تصویر
-        if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
-        if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
-    }
-    draw() {
-        ctx.fillStyle = 'rgba(255, 170, 0, 0.8)'; // رنگ طلایی اتم‌ها
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
-    }
+    constructor() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.size = Math.random() * 2 + 0.5; this.speedX = (Math.random() * 1) - 0.5; this.speedY = (Math.random() * 1) - 0.5; }
+    update() { this.x += this.speedX; this.y += this.speedY; if (this.x < 0 || this.x > canvas.width) this.speedX *= -1; if (this.y < 0 || this.y > canvas.height) this.speedY *= -1; }
+    draw() { ctx.fillStyle = 'rgba(255, 170, 0, 0.8)'; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
 }
-
-// ساخت ذرات متناسب با عرض صفحه (ریسپانسیو)
-function initParticles() {
-    particlesArray = [];
-    // محاسبه تعداد ذرات نسبت به فضای صفحه برای جلوگیری از لگ زدن موبایل
-    const numberOfParticles = Math.floor((canvas.width * canvas.height) / 12000); 
-    const clampedParticles = Math.min(Math.max(numberOfParticles, 40), 120); // حداقل 40، حداکثر 120 ذره
-
-    for (let i = 0; i < clampedParticles; i++) {
-        particlesArray.push(new Particle());
-    }
-}
+function initParticles() { particlesArray = []; const num = Math.min(Math.max(Math.floor((canvas.width * canvas.height) / 12000), 40), 120); for (let i = 0; i < num; i++) particlesArray.push(new Particle()); }
 initParticles();
-
-// رسم خطوط اتصال (بارهای الکتریکی)
-function connectParticles() {
-    let maxDistance = 120; // حداکثر فاصله برای اتصال اتم‌ها
-    for (let a = 0; a < particlesArray.length; a++) {
-        for (let b = a; b < particlesArray.length; b++) {
-            let dx = particlesArray[a].x - particlesArray[b].x;
-            let dy = particlesArray[a].y - particlesArray[b].y;
-            let distance = Math.sqrt(dx * dx + dy * dy);
-
-            if (distance < maxDistance) {
-                // خطوطی که نزدیک‌ترند پررنگ‌تر می‌شوند
-                let opacity = 1 - (distance / maxDistance);
-                ctx.strokeStyle = `rgba(255, 170, 0, ${opacity * 0.6})`; 
-                ctx.lineWidth = 1;
-                ctx.beginPath();
-                ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
-                ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
-                ctx.stroke();
-            }
-        }
-    }
-}
-
-// حلقه انیمیشن
 function animateParticles() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    for (let i = 0; i < particlesArray.length; i++) {
-        particlesArray[i].update();
-        particlesArray[i].draw();
+    for (let i = 0; i < particlesArray.length; i++) { particlesArray[i].update(); particlesArray[i].draw(); }
+    let maxDist = 120;
+    for (let a = 0; a < particlesArray.length; a++) {
+        for (let b = a; b < particlesArray.length; b++) {
+            let dx = particlesArray[a].x - particlesArray[b].x; let dy = particlesArray[a].y - particlesArray[b].y; let dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < maxDist) { let op = 1 - (dist / maxDist); ctx.strokeStyle = `rgba(255, 170, 0, ${op * 0.6})`; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(particlesArray[a].x, particlesArray[a].y); ctx.lineTo(particlesArray[b].x, particlesArray[b].y); ctx.stroke(); }
+        }
     }
-    connectParticles();
     requestAnimationFrame(animateParticles);
 }
-animateParticles();
-
-// تنظیم مجدد ذرات موقع تغییر اندازه صفحه (چرخش موبایل)
-window.addEventListener('resize', () => {
-    initParticles();
-});
-
+animateParticles(); window.addEventListener('resize', () => initParticles());
 
 // ==========================================
-// 2. اسکریپت دریافت دیتا از Cloudflare Worker
+// منطق اصلی پیاده‌سازی لینک‌ها بر اساس ساختار جدید
 // ==========================================
 const SECRET_PASSWORD = "MySuperSecretKey123!"; 
-const WORKER_URL = "https://broad-wind-35ae.soheylmax36-921.workers.dev/";
+
+// ۳. لینک ثابت دیتابیس مرکزی کل اشتراک‌ها
+const CENTRAL_LINKS_URL = "https://babashakare.github.io/site/code.txt"; 
+
+let DYNAMIC_WORKER_URL = ""; // لینک داینامیک مصرف منابع که در ادامه ساخته می‌شود
+let USER_LINKS = { v2ray: "", singbox: "", all: "" };
+
+window.onload = function() {
+    const cachedPass1 = localStorage.getItem('worker_pass1');
+    const cachedSubPass2 = localStorage.getItem('worker_sub_pass2');
+    
+    // اگر اطلاعات معتبر در حافظه هست، فقط در این صورت لاگین خودکار انجام شود
+    if (cachedPass1 && cachedSubPass2) {
+        // بازسازی دقیق لینک بر اساس فرمول جدید شما: https://رمز_دوم.رمز_اول.workers.dev/
+        DYNAMIC_WORKER_URL = `https://${cachedSubPass2}.${cachedPass1}.workers.dev/`;
+        
+        document.getElementById('login-section').style.display = 'none';
+        document.getElementById('main-content').style.display = 'block';
+        startDashboardProcess();
+    }
+};
+
+function goToStep2(role) {
+    const pass1 = document.getElementById('pass1').value.trim();
+    if (!pass1) { alert("لطفا ابتدا رمز اول را وارد کنید!"); return; }
+    document.getElementById('step-1').style.display = 'none';
+    if (role === 'admin') {
+        const cachedAdminPass = localStorage.getItem('worker_admin_pass2');
+        if (cachedAdminPass) document.getElementById('admin_pass2').value = cachedAdminPass;
+        document.getElementById('step-admin').style.display = 'block';
+    } else {
+        const cachedSubPass = localStorage.getItem('worker_sub_pass2');
+        if (cachedSubPass) document.getElementById('sub_pass2').value = cachedSubPass;
+        document.getElementById('step-sub').style.display = 'block';
+    }
+}
+
+function backToStep1() {
+    document.getElementById('step-admin').style.display = 'none';
+    document.getElementById('step-sub').style.display = 'none';
+    document.getElementById('step-1').style.display = 'block';
+}
+
+function submitLogin(role) {
+    const pass1 = document.getElementById('pass1').value.trim();
+    localStorage.setItem('worker_pass1', pass1);
+
+    if (role === 'admin') {
+        const adminPass2 = document.getElementById('admin_pass2').value.trim();
+        if (!adminPass2) { alert("لطفا رمز دوم ادمین را وارد کنید!"); return; }
+        localStorage.setItem('worker_admin_pass2', adminPass2);
+        window.location.href = `https://${adminPass2}.${pass1}.workers.dev/admin`;
+    } else {
+        const subPass2 = document.getElementById('sub_pass2').value.trim();
+        if (!subPass2) { alert("لطفا رمز دوم داشبورد را وارد کنید!"); return; }
+        
+        // پاکسازی و تنظیم مجدد
+        localStorage.setItem('worker_sub_pass2', subPass2);
+        
+        // ساخت آدرس جدید دقیق: https://max.all.workers.dev/
+        DYNAMIC_WORKER_URL = `https://${subPass2}.${pass1}.workers.dev/`;
+        
+        document.getElementById('login-section').style.display = 'none';
+        document.getElementById('main-content').style.display = 'block';
+        
+        // فراخوانی مجدد برای اطمینان از اعمال لینک جدید
+        startDashboardProcess();
+    }
+}
+
+async function startDashboardProcess() {
+    getAndDecryptData();   // فراخوانی باینری مصرف منابع از لینک داینامیک ایجاد شده
+    fetchCentralLinks();   // فراخوانی موازی لینک‌های اشتراک از سرور مرکزی ثابت
+}
 
 function binaryToString(binary) {
     let str = '';
@@ -197,14 +252,15 @@ async function getCryptoKey(password) {
     );
 }
 
+// خواندن کد باینری میزان مصرف منابع از لینک اختصاصی داشبورد کاربر
 async function getAndDecryptData() {
     try {
-        const response = await fetch(WORKER_URL);
+        const response = await fetch(DYNAMIC_WORKER_URL);
+        if (!response.ok) throw new Error();
+        
         const binaryData = await response.text();
-
         const hexString = binaryToString(binaryData);
         const encryptedArray = new Uint8Array(hexString.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
-
         const key = await getCryptoKey(SECRET_PASSWORD);
         const iv = new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
 
@@ -214,33 +270,69 @@ async function getAndDecryptData() {
 
         const reqCount = parseInt(requests) || 0;
         const eventCount = parseInt(events) || 0;
-
         const reqGB = (reqCount / 100000) * 6;
         const eventGB = (eventCount / 200000) * 12;
-
-        const reqPercent = Math.min(reqCount / 100000, 1);
-        const eventPercent = Math.min(eventCount / 200000, 1);
-
-        const reqOffset = 220 - (reqPercent * 220);
-        const eventOffset = 220 - (eventPercent * 220);
 
         document.getElementById('loading').style.display = 'none';
         document.getElementById('dashboard').style.display = 'block';
         
         document.getElementById('req-val').innerText = reqGB.toFixed(2) + " GB";
-        document.getElementById('req-circle').style.strokeDashoffset = reqOffset;
-
+        document.getElementById('req-circle').style.strokeDashoffset = 220 - (Math.min(reqCount / 100000, 1) * 220);
         document.getElementById('event-val').innerText = eventGB.toFixed(2) + " GB";
-        document.getElementById('event-circle').style.strokeDashoffset = eventOffset;
-
+        document.getElementById('event-circle').style.strokeDashoffset = 220 - (Math.min(eventCount / 200000, 1) * 220);
     } catch (error) {
-        console.error(error);
-        document.getElementById('loading').innerText = "خطا در بارگذاری و رمزگشایی اطلاعات شبکه!";
+        document.getElementById('loading').innerText = "خطا در بارگذاری اطلاعات مصرف سرور!";
         document.getElementById('loading').style.color = "#f85149";
+        document.getElementById('loading').innerHTML += `<br><br><button class="login-btn" onclick="logout()">اصلاح اطلاعات</button>`;
     }
 }
 
-function copyLink(link) {
+// خواندن لینک دکمه‌های کپی اشتراک بر اساس جستجوی «رمز اول» کاربر در دیتابیس ثابت
+async function fetchCentralLinks() {
+    try {
+        const currentPass1 = localStorage.getItem('worker_pass1'); // ملاک اصلی جستجو: رمز اول
+        const response = await fetch(CENTRAL_LINKS_URL);
+        if (!response.ok) return;
+        
+        const fileContent = await response.text();
+        const chunks = fileContent.split('/'); 
+
+        for (let chunk of chunks) {
+            chunk = chunk.trim();
+            if (!chunk) continue;
+
+            try {
+                const hexString = binaryToString(chunk);
+                const encryptedArray = new Uint8Array(hexString.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
+                const key = await getCryptoKey(SECRET_PASSWORD);
+                const iv = new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+
+                const decryptedBuffer = await window.crypto.subtle.decrypt({ name: "AES-GCM", iv: iv }, key, encryptedArray);
+                const dec = new TextDecoder();
+                const rawText = dec.decode(decryptedBuffer); 
+
+                const parts = rawText.split('|'); // ساختار باینری: رمز اول|v2ray|singbox|all
+                if (parts[0] === currentPass1) {
+                    USER_LINKS.v2ray = parts[1] || "";
+                    USER_LINKS.singbox = parts[2] || "";
+                    USER_LINKS.all = parts[3] || "";
+                    break;
+                }
+            } catch (e) {
+                // مچ نشدن چانک به معنی تعلق داشتن آن به رمز اولِ یک یوزر دیگر است
+            }
+        }
+    } catch (err) {
+        console.error("خطا در ارتباط با سرور مرکزی توکن‌ها", err);
+    }
+}
+
+function copyDynamicLink(type) {
+    const link = USER_LINKS[type];
+    if (!link) {
+        alert("لینک اشتراکی برای این حساب تعریف نشده یا هنوز لود نشده است.");
+        return;
+    }
     navigator.clipboard.writeText(link).then(() => {
         const toast = document.getElementById('toast');
         toast.classList.add('show');
@@ -248,8 +340,26 @@ function copyLink(link) {
     });
 }
 
-getAndDecryptData();
-</script>
+function jumpToAdminQuick() {
+    const pass1 = localStorage.getItem('worker_pass1');
+    const adminPass2 = localStorage.getItem('worker_admin_pass2');
+    if (pass1 && adminPass2) {
+        window.location.href = `https://${adminPass2}.${pass1}.workers.dev/admin`;
+    } else {
+        const quickBox = document.getElementById('quick-admin-box');
+        quickBox.style.display = quickBox.style.display === 'block' ? 'none' : 'block';
+    }
+}
 
+function saveAndGoToAdmin() {
+    const pass1 = localStorage.getItem('worker_pass1');
+    const quickAdminPass2 = document.getElementById('quick_admin_pass2').value.trim();
+    if (!quickAdminPass2) { alert("لطفا را وارد کنید!"); return; }
+    localStorage.setItem('worker_admin_pass2', quickAdminPass2);
+    window.location.href = `https://${quickAdminPass2}.${pass1}.workers.dev/admin`;
+}
+
+function logout() { localStorage.clear(); location.reload(); }
+</script>
 </body>
 </html>
