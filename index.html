@@ -10,9 +10,7 @@
 </head>
 <body class="ts">
 
-<video autoplay loop muted playsinline class="bg-video">
-    <source src="1.mp4" type="video/mp4">
-    </video>
+<canvas id="particle-canvas"></canvas>
 
 <div class="panel-wrapper">
     <div class="panel-card">
@@ -81,6 +79,104 @@
 </div>
 
 <script>
+// ==========================================
+// 1. اسکریپت انیمیشن پس‌زمینه (ذرات/اتم‌ها)
+// ==========================================
+const canvas = document.getElementById('particle-canvas');
+const ctx = canvas.getContext('2d');
+
+let particlesArray = [];
+
+// تنظیم اندازه بوم نسبت به صفحه
+function setCanvasSize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+setCanvasSize();
+window.addEventListener('resize', setCanvasSize);
+
+// کلاس ذرات
+class Particle {
+    constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2 + 0.5; // اندازه اتم‌ها
+        this.speedX = (Math.random() * 1) - 0.5; // سرعت افقی
+        this.speedY = (Math.random() * 1) - 0.5; // سرعت عمودی
+    }
+    update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+
+        // برگشتن ذرات در صورت برخورد با لبه‌های تصویر
+        if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+    }
+    draw() {
+        ctx.fillStyle = 'rgba(255, 170, 0, 0.8)'; // رنگ طلایی اتم‌ها
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+    }
+}
+
+// ساخت ذرات متناسب با عرض صفحه (ریسپانسیو)
+function initParticles() {
+    particlesArray = [];
+    // محاسبه تعداد ذرات نسبت به فضای صفحه برای جلوگیری از لگ زدن موبایل
+    const numberOfParticles = Math.floor((canvas.width * canvas.height) / 12000); 
+    const clampedParticles = Math.min(Math.max(numberOfParticles, 40), 120); // حداقل 40، حداکثر 120 ذره
+
+    for (let i = 0; i < clampedParticles; i++) {
+        particlesArray.push(new Particle());
+    }
+}
+initParticles();
+
+// رسم خطوط اتصال (بارهای الکتریکی)
+function connectParticles() {
+    let maxDistance = 120; // حداکثر فاصله برای اتصال اتم‌ها
+    for (let a = 0; a < particlesArray.length; a++) {
+        for (let b = a; b < particlesArray.length; b++) {
+            let dx = particlesArray[a].x - particlesArray[b].x;
+            let dy = particlesArray[a].y - particlesArray[b].y;
+            let distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance < maxDistance) {
+                // خطوطی که نزدیک‌ترند پررنگ‌تر می‌شوند
+                let opacity = 1 - (distance / maxDistance);
+                ctx.strokeStyle = `rgba(255, 170, 0, ${opacity * 0.6})`; 
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+                ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+                ctx.stroke();
+            }
+        }
+    }
+}
+
+// حلقه انیمیشن
+function animateParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let i = 0; i < particlesArray.length; i++) {
+        particlesArray[i].update();
+        particlesArray[i].draw();
+    }
+    connectParticles();
+    requestAnimationFrame(animateParticles);
+}
+animateParticles();
+
+// تنظیم مجدد ذرات موقع تغییر اندازه صفحه (چرخش موبایل)
+window.addEventListener('resize', () => {
+    initParticles();
+});
+
+
+// ==========================================
+// 2. اسکریپت دریافت دیتا از Cloudflare Worker
+// ==========================================
 const SECRET_PASSWORD = "MySuperSecretKey123!"; 
 const WORKER_URL = "https://broad-wind-35ae.soheylmax36-921.workers.dev/";
 

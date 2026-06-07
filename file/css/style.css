@@ -1,7 +1,7 @@
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+ * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         
         body { 
-            background-color: #050505; /* فال‌بک در صورت لود نشدن ویدیو */
+            background-color: #050505; /* پس‌زمینه کاملاً تاریک پایه */
             color: #e0e0e0; 
             display: flex; 
             justify-content: center; 
@@ -12,28 +12,24 @@
             position: relative;
         }
 
-        /* 1. ویدیو پس‌زمینه متحرک */
-        .bg-video {
+        /* 1. پس‌زمینه دیجیتالی Canvas */
+        #particle-canvas {
             position: fixed;
-            top: 50%;
-            left: 50%;
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            transform: translateX(-50%) translateY(-50%);
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
             z-index: -2;
-            object-fit: cover;
-            opacity: 0.8; /* تنظیم شفافیت ویدیو در کل صفحه */
+            background: radial-gradient(circle at center, #110f0d 0%, #050505 100%);
         }
 
-        /* 4 & 5. قاب مستطیلی با گوشه‌های گرد و نوار طلایی چرخان */
+        /* قاب مستطیلی با گوشه‌های گرد و نوار طلایی چرخان */
         .panel-wrapper {
             position: relative;
             width: 100%;
             max-width: 520px;
             border-radius: 26px;
-            padding: 3px; /* ضخامت نوار طلایی */
+            padding: 3px; 
             overflow: hidden;
             box-shadow: 0 0 50px rgba(0, 0, 0, 0.9);
         }
@@ -60,10 +56,10 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* 3. کارت اصلی با بک‌گراند دارک و بلور شدید */
+        /* کارت اصلی با بک‌گراند دارک و بلور شدید */
         .panel-card {
-            background: rgba(12, 12, 14, 0.92); /* رنگ بسیار تیره برای دیده نشدن ویدیو */
-            backdrop-filter: blur(40px); /* تاری بسیار بالا */
+            background: rgba(12, 12, 14, 0.92); 
+            backdrop-filter: blur(40px); 
             -webkit-backdrop-filter: blur(40px);
             border-radius: 24px;
             padding: 40px 25px;
@@ -84,18 +80,18 @@
 
         .loading { color: #8b949e; font-style: italic; font-size: 14px; padding: 20px; }
 
-        /* 2 & 6. ریسپانسیو بودن گیج‌ها (نیم‌دایره‌ها) */
+        /* ریسپانسیو بودن گیج‌ها */
         .gauges-container {
             display: flex;
             justify-content: center;
             gap: 15px;
             margin-bottom: 40px;
-            flex-wrap: wrap; /* در موبایل‌های خیلی کوچک می‌شکند */
+            flex-wrap: wrap; 
         }
 
         .gauge-wrapper {
             flex: 1;
-            min-width: 130px; /* حداقل اندازه برای موبایل */
+            min-width: 130px; 
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -113,8 +109,8 @@
         .gauge-chart-svg {
             position: relative;
             width: 100%;
-            max-width: 150px; /* محدودیت در دسکتاپ */
-            aspect-ratio: 16/9; /* حفظ تناسب نیم‌دایره */
+            max-width: 150px; 
+            aspect-ratio: 16/9; 
             overflow: hidden;
         }
 
@@ -127,7 +123,6 @@
             transform: rotate(180deg);
         }
 
-        /* محاسبه viewBox ریسپانسیو بر اساس کد قبلی */
         .circle-bg {
             fill: none;
             stroke: #1c1a21;
@@ -167,7 +162,7 @@
             white-space: nowrap;
         }
 
-        /* 7. چینش دکمه‌های کپی (2 تا بالا، 1 دونه پایین وسط) */
+        /* چینش دکمه‌های کپی */
         .links-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -181,7 +176,7 @@
             border-radius: 12px;
             padding: 12px 15px; 
             display: flex; 
-            flex-direction: column; /* زیر هم برای جاگیری بهتر در موبایل */
+            flex-direction: column; 
             justify-content: center; 
             align-items: center;
             gap: 8px;
@@ -189,12 +184,11 @@
             transition: all 0.3s ease;
         }
 
-        /* دکمه سوم (کپی همه) در ردیف دوم و وسط */
         .links-container .link-btn:last-child {
-            grid-column: 1 / -1; /* کل عرض را می‌گیرد */
+            grid-column: 1 / -1; 
             justify-self: center;
-            width: 70%; /* کوچکتر از کل عرض تا وسط قرار بگیرد */
-            flex-direction: row; /* در دکمه تکی المان‌ها روبروی هم باشند */
+            width: 70%; 
+            flex-direction: row; 
             justify-content: space-between;
         }
 
@@ -209,7 +203,6 @@
         .btn-text { font-size: clamp(11px, 3vw, 13px); font-weight: 600; color: #e0e0e0; text-align: center; }
         .btn-tag { font-size: 10px; background: rgba(255, 170, 0, 0.15); color: #ffaa00; padding: 3px 8px; border-radius: 6px; font-weight: bold; }
 
-        /* اگر صفحه خیلی کوچک شد دکمه‌ها زیر هم بیایند */
         @media (max-width: 420px) {
             .links-container .link-btn:last-child { width: 100%; }
         }
@@ -222,7 +215,7 @@
         }
         .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-        /* 8. انیمیشن درخشش مداوم آیکون‌های سوشال */
+        /* انیمیشن درخشش آیکون‌های سوشال */
         .social-container {
             display: flex; justify-content: center; gap: 30px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 25px;
         }
@@ -233,10 +226,9 @@
             width: 28px; 
             height: 28px; 
             transition: all 0.3s ease;
-            animation: pulseGlow 3s infinite alternate; /* انیمیشن درخشش */
+            animation: pulseGlow 3s infinite alternate; 
         }
 
-        /* ایجاد تاخیر برای آیکون دوم تا همزمان با اولی چشمک نزند */
         .social-container a:nth-child(2) .social-icon {
             animation-delay: 1.5s;
         }
