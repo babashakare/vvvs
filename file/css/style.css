@@ -115,13 +115,13 @@
         }
 
         .gauge-chart-svg svg {
-            width: 100%;
-            height: auto;
-            position: absolute;
-            left: 0;
-            top: 0;
-            transform: rotate(180deg);
-        }
+			width: 100%;
+			height: auto;
+			position: absolute;
+			left: 0;
+			top: 0;
+			transform: rotate(180deg); /* حالت پیش‌فرض و اولیه شما بدون آینه‌سازی */
+		}
 
         .circle-bg {
             fill: none;

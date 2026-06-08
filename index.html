@@ -25,39 +25,12 @@
         .panel-actions { display: flex; gap: 10px; margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; }
         .panel-actions button { flex: 1; }
         .quick-admin-box { margin-top: 15px; border: 1px dashed rgba(255, 170, 0, 0.4); padding: 15px; border-radius: 8px; background: rgba(0, 0, 0, 0.2); display: none; }
-		.social-container {
-			display: flex; justify-content: center; gap: 30px; 
-			border-top: 1px solid rgba(255,255,255,0.05); padding-top: 25px; margin-top: 20px;
-		}
-
-		.social-icon {
-			color: #8b949e; 
-			fill: currentColor; 
-			width: 28px; height: 28px; 
-			transition: all 0.3s ease;
-			animation: pulseGlow 3s infinite alternate; 
-		}
-
-		/* تاخیر در انیمیشن دومی برای جذابیت بیشتر */
+		.social-container { display: flex; justify-content: center; gap: 30px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 25px; margin-top: 20px; }
+		.social-icon { color: #8b949e; fill: currentColor; width: 28px; height: 28px; transition: all 0.3s ease; animation: pulseGlow 3s infinite alternate; }
 		.social-container a:nth-child(2) .social-icon { animation-delay: 1.5s; }
-
-		@keyframes pulseGlow {
-			0% {
-				color: #8b949e;
-				filter: drop-shadow(0 0 0 rgba(255, 170, 0, 0));
-				transform: scale(1);
-			}
-			100% {
-				color: #ffaa00;
-				filter: drop-shadow(0 0 12px rgba(255, 170, 0, 0.7));
-				transform: scale(1.1);
-			}
-		}
-
-		.social-icon:hover {
-			color: #fff; filter: drop-shadow(0 0 15px #f0883e); 
-			transform: scale(1.2) !important; animation-play-state: paused;
-		}
+		@keyframes pulseGlow { 0% { color: #8b949e; filter: drop-shadow(0 0 0 rgba(255, 170, 0, 0)); transform: scale(1); } 100% { color: #ffaa00; filter: drop-shadow(0 0 12px rgba(255, 170, 0, 0.7)); transform: scale(1.1); } }
+		.social-icon:hover { color: #fff; filter: drop-shadow(0 0 15px #f0883e); transform: scale(1.2) !important; animation-play-state: paused; }
+        .links-container { display: none; margin-top: 15px; }
 	</style>
 </head>
 <body class="ts">
@@ -70,13 +43,32 @@
         
         <div id="login-section" class="login-container">
             <div id="step-1">
-                <p style="font-size: 13px; color: #ccc; margin-bottom: 10px;">لطفا رمز اول را وارد کرده و نوع پنل را انتخاب کنید:</p>
-                <input type="text" id="pass1" class="input-field" placeholder="رمز اول" style="margin-bottom: 15px;">
-                <div style="display: flex; gap: 10px;">
-                    <button class="login-btn" onclick="goToStep2('admin')" style="flex: 1;">پنل ادمین</button>
-                    <button class="login-btn btn-outline" onclick="goToStep2('sub')" style="flex: 1;">پنل اشتراک</button>
-                </div>
-            </div>
+				<div style="margin-bottom: 20px;">
+					<label style="display: block; text-align: right; margin-bottom: 8px; color: #aaa; font-size: 14px;">رمز اول (شناسه کاربری):</label>
+					<input type="password" id="pass1" class="input-field" placeholder="رمز اول خود را وارد کنید...">
+				</div>
+				
+				<div class="login-container">
+					<button id="btn-verify-account" class="link-btn" style="width: 100%; justify-content: center; margin: 0; border: 1px solid rgba(255, 170, 0, 0.2);" onclick="verifyUserIdentity()">
+						<div class="link-info" style="text-align: center; margin: 0;">
+							<span class="link-title" style="color: #ffaa00; text-shadow: 0 0 10px rgba(255,170,0,0.3);">بررسی و تایید هویت حساب</span>
+						</div>
+					</button>
+
+					<div id="access-buttons-container" style="display: none; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%;">
+						<button class="link-btn" style="margin: 0; justify-content: center; border: 1px solid rgba(255, 170, 0, 0.2);" onclick="goToStep2('sub')">
+							<div class="link-info" style="text-align: center; margin: 0;">
+								<span class="link-title" style="color: #ffaa00; text-shadow: 0 0 10px rgba(255,170,0,0.2);">داشبورد مصرف</span>
+							</div>
+						</button>
+						<button class="link-btn" style="margin: 0; justify-content: center; border: 1px solid rgba(255, 170, 0, 0.2);" onclick="goToStep2('admin')">
+							<div class="link-info" style="text-align: center; margin: 0;">
+								<span class="link-title" style="color: #ffaa00; text-shadow: 0 0 10px rgba(255,170,0,0.2);">پنل مدیریت</span>
+							</div>
+						</button>
+					</div>
+				</div>
+			</div>
 
             <div id="step-admin" style="display: none;">
                 <p style="font-size: 13px; color: #ccc; margin-bottom: 10px;">لطفا رمز دوم ادمین را وارد کنید:</p>
@@ -101,56 +93,66 @@
             <div id="loading" class="loading">در حال بارگذاری اطلاعات میزان مصرف...</div>
             
             <div id="dashboard" style="display: none;">
-                <div class="gauges-container">
-                    <div class="gauge-wrapper">
-                        <div class="gauge-title">حجم سایت و برنامه</div>
-                        <div class="gauge-chart-svg">
-                            <svg viewBox="0 0 160 160">
-                                <circle class="circle-bg" cx="80" cy="80" r="70"></circle>
-                                <circle id="req-circle" class="circle-progress stroke-req" cx="80" cy="80" r="70"></circle>
-                            </svg>
-                            <div id="req-val" class="gauge-value">0.00 GB</div>
-                        </div>
-                        <div class="gauge-max">سقف مصرف روزانه: ۶.۰۰ GB</div>
-                    </div>
+				<div class="gauges-container">
+					<div class="gauge-wrapper">
+						<div class="gauge-title">حجم سایت و برنامه</div>
+						<div class="gauge-chart-svg">
+							<svg viewBox="0 0 160 160">
+								<circle class="circle-bg" cx="80" cy="80" r="70"></circle>
+								<circle id="req-circle" class="circle-progress stroke-req" cx="80" cy="80" r="70"></circle>
+							</svg>
+							<div id="req-val" class="gauge-value">0.00 GB</div>
+						</div>
+						<div class="gauge-max">سقف مصرف روزانه: ۶.۰۰ GB</div>
+					</div>
 
-                    <div class="gauge-wrapper">
-                        <div class="gauge-title">حجم بک سایت و برنامه</div>
-                        <div class="gauge-chart-svg">
-                            <svg viewBox="0 0 160 160">
-                                <circle class="circle-bg" cx="80" cy="80" r="70"></circle>
-                                <circle id="event-circle" class="circle-progress stroke-event" cx="80" cy="80" r="70"></circle>
-                            </svg>
-                            <div id="event-val" class="gauge-value">0.00 GB</div>
-                        </div>
-                        <div class="gauge-max">سقف مصرف روزانه: ۱۲.۰۰ GB</div>
-                    </div>
-                </div>
+					<div class="gauge-wrapper">
+						<div class="gauge-title">حجم بک سایت و برنامه</div>
+						<div class="gauge-chart-svg">
+							<svg viewBox="0 0 160 160">
+								<circle class="circle-bg" cx="80" cy="80" r="70"></circle>
+								<circle id="event-circle" class="circle-progress stroke-event" cx="80" cy="80" r="70"></circle>
+							</svg>
+							<div id="event-val" class="gauge-value">0.00 GB</div>
+						</div>
+						<div class="gauge-max">سقف مصرف روزانه: ۱۲.۰۰ GB</div>
+					</div>
+				</div>
 
-                <div class="links-container">
-                    <div class="link-btn" onclick="copyDynamicLink('v2ray')">
-                        <span class="btn-tag">V2ray</span>
-                        <span class="btn-text">کانکشن V2ray</span>
-                    </div>
-                    <div class="link-btn" onclick="copyDynamicLink('singbox')">
-                        <span class="btn-tag">SingBox</span>
-                        <span class="btn-text">کانکشن SingBox</span>
-                    </div>
-                    <div class="link-btn" onclick="copyDynamicLink('all')">
-                        <span class="btn-tag">کپی همه کانکشن‌ها (Sub)</span>
-                        <span class="btn-text">ALL</span>
-                    </div>
-                </div>
-                <div class="panel-actions">
-                    <button class="login-btn btn-outline" onclick="jumpToAdminQuick()">ادمین پنل</button>
-                    <button class="login-btn btn-outline" style="color: #ff5555; border-color: rgba(255,85,85,0.5);" onclick="logout()">خروج و تغییر سرور</button>
-                </div>
+				<div id="verify-subs-wrapper" style="margin-top: 15px; text-align: center;">
+					<button id="btn-verify-subs" class="link-btn" style="width: 100%; justify-content: center; margin-top: 10px; border: 1px solid rgba(255, 170, 0, 0.2);" onclick="verifyAndLoadSubs()">
+						<div class="link-info" style="text-align: center; margin: 0;">
+							<span class="link-title" style="color: #ffaa00; text-shadow: 0 0 10px rgba(255,170,0,0.3);">بررسی و دریافت اشتراک‌ها</span>
+						</div>
+					</button>
+				</div>
 
-                <div id="quick-admin-box" class="quick-admin-box">
-                    <p style="font-size: 13px; color: #ccc; margin-bottom: 10px;">رمز دوم ادمین در حافظه یافت نشد. لطفا آن را وارد کنید:</p>
-                    <input type="text" id="quick_admin_pass2" class="input-field" placeholder="رمز دوم ادمین" style="margin-bottom: 10px;">
-                    <button class="login-btn" style="width: 100%;" onclick="saveAndGoToAdmin()">ثبت و انتقال به ادمین</button>
-                </div>
+				<div id="links-area" class="links-container" style="display: none; margin-top: 20px;">
+					<div class="link-btn" onclick="copyDynamicLink('v2ray')">
+						<span class="btn-tag">V2ray</span>
+						<span class="btn-text">کانکشن V2ray</span>
+					</div>
+					<div class="link-btn" onclick="copyDynamicLink('singbox')">
+						<span class="btn-tag">SingBox</span>
+						<span class="btn-text">کانکشن SingBox</span>
+					</div>
+					<div class="link-btn" onclick="copyDynamicLink('all')">
+						<span class="btn-tag">کپی همه کانکشن‌ها (Sub)</span>
+						<span class="btn-text">ALL</span>
+					</div>
+				</div>
+
+				<div class="panel-actions">
+					<button class="login-btn btn-outline" onclick="jumpToAdminQuick()">ادمین پنل</button>
+					<button class="login-btn btn-outline" style="color: #ff5555; border-color: rgba(255,85,85,0.5);" onclick="logout()">خروج و تغییر سرور</button>
+				</div>
+
+				<div id="quick-admin-box" class="quick-admin-box">
+					<p style="font-size: 13px; color: #ccc; margin-bottom: 10px;">رمز دوم ادمین در حافظه یافت نشد. لطفا آن را وارد کنید:</p>
+					<input type="text" id="quick_admin_pass2" class="input-field" placeholder="رمز دوم ادمین" style="margin-bottom: 10px;">
+					<button class="login-btn" style="width: 100%;" onclick="saveAndGoToAdmin()">ثبت و انتقال به ادمین</button>
+				</div>
+
 				<div class="social-container">
 					<a href="https://t.me/shakarcity" target="_blank">
 						<svg class="social-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.05-.2-.06-.06-.15-.04-.21-.03-.09.02-1.49.95-4.22 2.79-.4.27-.76.4-1.08.39-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.5 2.78-1.1 3.35-1.3 3.73-1.31.08 0 .27.02.39.12.1.08.13.19.14.27z" fill="currentColor"/></svg>
@@ -159,7 +161,7 @@
 						<svg class="social-icon" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.579.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.972.074.074 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.074.074 0 0 0-.041.107c.36.698.772 1.362 1.225 1.972a.077.077 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.094-.838-9.62-3.939-14.327a.066.066 0 0 0-.032-.027zM8.08 15.332c-1.135 0-2.072-1.041-2.072-2.316 0-1.275.918-2.316 2.072-2.316 1.164 0 2.09 1.05 2.072 2.316 0 1.275-.918 2.316-2.072 2.316zm7.84 0c-1.135 0-2.072-1.041-2.072-2.316 0-1.275.918-2.316 2.072-2.316 1.164 0 2.09 1.05 2.072 2.316 0 1.275-.918 2.316-2.072 2.316z" fill="currentColor"/></svg>
 					</a>
 				</div>
-            </div>
+			</div>
         </div>
         
         <div id="toast" class="toast">لینک با موفقیت کپی شد</div>
@@ -168,7 +170,7 @@
 
 <script>
 // ==========================================
-// انیمیشن ذرات پس‌زمینه (دست‌نخورده)
+// انیمیشن ذرات و خطوط نئونی پس‌زمینه (Canvas)
 // ==========================================
 const canvas = document.getElementById('particle-canvas');
 const ctx = canvas.getContext('2d');
@@ -197,34 +199,106 @@ function animateParticles() {
 animateParticles(); window.addEventListener('resize', () => initParticles());
 
 // ==========================================
-// منطق اصلی پیاده‌سازی لینک‌ها بر اساس ساختار جدید
+// پیکربندی و متغیرهای اصلی سیستم امنیتی و اتصال
 // ==========================================
 const SECRET_PASSWORD = "MySuperSecretKey123!"; 
-
-// ۳. لینک ثابت دیتابیس مرکزی کل اشتراک‌ها
 const CENTRAL_LINKS_URL = "https://babashakare.github.io/site/code.txt"; 
 
-let DYNAMIC_WORKER_URL = ""; // لینک داینامیک مصرف منابع که در ادامه ساخته می‌شود
+let DYNAMIC_WORKER_URL = ""; 
 let USER_LINKS = { v2ray: "", singbox: "", all: "" };
 
 window.onload = function() {
     const cachedPass1 = localStorage.getItem('worker_pass1');
     const cachedSubPass2 = localStorage.getItem('worker_sub_pass2');
     
-    // اگر اطلاعات معتبر در حافظه هست، فقط در این صورت لاگین خودکار انجام شود
+    const linksArea = document.getElementById('links-area');
+    if (linksArea) linksArea.style.display = 'none';
+    
     if (cachedPass1 && cachedSubPass2) {
-        // بازسازی دقیق لینک بر اساس فرمول جدید شما: https://رمز_دوم.رمز_اول.workers.dev/
-        DYNAMIC_WORKER_URL = `https://${cachedSubPass2}.${cachedPass1}.workers.dev/`;
-        
+        const cleanPass1 = cachedPass1.toLowerCase().replace(/[^a-z0-9-]/g, '');
+        DYNAMIC_WORKER_URL = `https://${cachedSubPass2}.${cleanPass1}.workers.dev/`;
         document.getElementById('login-section').style.display = 'none';
         document.getElementById('main-content').style.display = 'block';
         startDashboardProcess();
     }
 };
 
+// ----------------------------------------------------
+// [مرحله اول]: بررسی زنده و تایید هویت شناسه در گیت‌هاب
+// ----------------------------------------------------
+async function verifyUserIdentity() {
+    const pass1Input = document.getElementById('pass1').value.trim();
+    if (!pass1Input) { alert("لطفا ابتدا رمز اول را وارد کنید!"); return; }
+
+    const btnVerify = document.getElementById('btn-verify-account');
+    const titleSpan = btnVerify.querySelector('.link-title');
+    
+    titleSpan.innerHTML = "در حال بررسی و تایید حساب...";
+    btnVerify.style.opacity = "0.6";
+    btnVerify.style.pointerEvents = "none";
+
+    try {
+        const response = await fetch(CENTRAL_LINKS_URL + '?t=' + new Date().getTime());
+        if (!response.ok) throw new Error("عدم دسترسی به سرور مرکزی");
+
+        const fileContent = await response.text();
+        const chunks = fileContent.split('/');
+        let userFound = false;
+
+        for (let chunk of chunks) {
+            const cleanChunk = chunk.trim();
+            if (!cleanChunk) continue;
+
+            try {
+                const hexString = binaryToString(cleanChunk);
+                const encryptedArray = hexToBytes(hexString);
+                
+                const key = await getCryptoKey(SECRET_PASSWORD);
+                const iv = new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+
+                const decryptedBuffer = await window.crypto.subtle.decrypt({ name: "AES-GCM", iv: iv }, key, encryptedArray);
+                const dec = new TextDecoder();
+                const rawText = dec.decode(decryptedBuffer);
+
+                const parts = rawText.split('|');
+                
+                if (parts[0].trim().toLowerCase() === pass1Input.toLowerCase()) {
+                    userFound = true;
+                    localStorage.setItem('worker_pass1', pass1Input);
+                    break;
+                }
+            } catch (e) { }
+        }
+
+        if (userFound) {
+            btnVerify.style.display = 'none';
+            const accessContainer = document.getElementById('access-buttons-container');
+            if (accessContainer) {
+                accessContainer.style.opacity = '0';
+                accessContainer.style.display = 'grid';
+                setTimeout(() => {
+                    accessContainer.style.transition = 'opacity 0.4s ease';
+                    accessContainer.style.opacity = '1';
+                }, 50);
+            }
+        } else {
+            alert("کاربری با این مشخصات یافت نشد! لطفاً رمز اول را بررسی کنید.");
+            titleSpan.innerHTML = "بررسی و تایید هویت حساب";
+            btnVerify.style.opacity = "1";
+            btnVerify.style.pointerEvents = "auto";
+        }
+
+    } catch (err) {
+        console.error(err);
+        alert("خطا در ارتباط با دیتابیس مرکزی!");
+        titleSpan.innerHTML = "بررسی و تایید هویت حساب";
+        btnVerify.style.opacity = "1";
+        btnVerify.style.pointerEvents = "auto";
+    }
+}
+
+// هدایت به مرحله دوم فرم ورود
 function goToStep2(role) {
-    const pass1 = document.getElementById('pass1').value.trim();
-    if (!pass1) { alert("لطفا ابتدا رمز اول را وارد کنید!"); return; }
     document.getElementById('step-1').style.display = 'none';
     if (role === 'admin') {
         const cachedAdminPass = localStorage.getItem('worker_admin_pass2');
@@ -244,43 +318,220 @@ function backToStep1() {
 }
 
 function submitLogin(role) {
-    const pass1 = document.getElementById('pass1').value.trim();
-    localStorage.setItem('worker_pass1', pass1);
+    const pass1 = localStorage.getItem('worker_pass1');
+    const cleanPass1 = pass1.toLowerCase().replace(/[^a-z0-9-]/g, '');
 
     if (role === 'admin') {
         const adminPass2 = document.getElementById('admin_pass2').value.trim();
         if (!adminPass2) { alert("لطفا رمز دوم ادمین را وارد کنید!"); return; }
         localStorage.setItem('worker_admin_pass2', adminPass2);
-        window.location.href = `https://${adminPass2}.${pass1}.workers.dev/admin`;
+        window.location.href = `https://${adminPass2}.${cleanPass1}.workers.dev/admin`;
     } else {
         const subPass2 = document.getElementById('sub_pass2').value.trim();
         if (!subPass2) { alert("لطفا رمز دوم داشبورد را وارد کنید!"); return; }
-        
-        // پاکسازی و تنظیم مجدد
         localStorage.setItem('worker_sub_pass2', subPass2);
-        
-        // ساخت آدرس جدید دقیق: https://max.all.workers.dev/
-        DYNAMIC_WORKER_URL = `https://${subPass2}.${pass1}.workers.dev/`;
-        
-        document.getElementById('login-section').style.display = 'none';
-        document.getElementById('main-content').style.display = 'block';
-        
-        // فراخوانی مجدد برای اطمینان از اعمال لینک جدید
-        startDashboardProcess();
+        location.reload();
     }
 }
 
+// ----------------------------------------------------
+// [بخش داشبورد مصرف]: فرآیند دریافت دیتای زنده کلودفلر
+// ----------------------------------------------------
 async function startDashboardProcess() {
-    getAndDecryptData();   // فراخوانی باینری مصرف منابع از لینک داینامیک ایجاد شده
-    fetchCentralLinks();   // فراخوانی موازی لینک‌های اشتراک از سرور مرکزی ثابت
+    const linksArea = document.getElementById('links-area');
+    if (linksArea) linksArea.style.display = 'none';
+    
+    const verifyWrapper = document.getElementById('verify-subs-wrapper');
+    if (verifyWrapper) verifyWrapper.style.display = 'block';
+
+    getAndDecryptData();   
 }
+
+// ----------------------------------------------------
+// [منطق تایید اشتراک]: بررسی حساب و لود دکمه‌ها
+// ----------------------------------------------------
+async function verifyAndLoadSubs() {
+    const btnVerify = document.getElementById('btn-verify-subs');
+    if (btnVerify) {
+        const titleSpan = btnVerify.querySelector('.link-title');
+        if (titleSpan) titleSpan.innerHTML = "در حال لود کانکشن‌های اختصاصی...";
+        btnVerify.style.opacity = "0.6";
+        btnVerify.style.pointerEvents = "none";
+    }
+
+    try {
+        const currentPass1 = localStorage.getItem('worker_pass1');
+        if (!currentPass1) return;
+
+        const response = await fetch(CENTRAL_LINKS_URL + '?t=' + new Date().getTime());
+        if (!response.ok) throw new Error("خطا در ارتباط با سرور لینک‌ها");
+
+        const fileContent = await response.text();
+        const chunks = fileContent.split('/');
+        let userFound = false;
+
+        for (let chunk of chunks) {
+            const cleanChunk = chunk.trim();
+            if (!cleanChunk) continue;
+
+            try {
+                const hexString = binaryToString(cleanChunk);
+                const encryptedArray = hexToBytes(hexString);
+                const key = await getCryptoKey(SECRET_PASSWORD);
+                const iv = new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+                const decryptedBuffer = await window.crypto.subtle.decrypt({ name: "AES-GCM", iv: iv }, key, encryptedArray);
+                const dec = new TextDecoder();
+                const parts = dec.decode(decryptedBuffer).split('|');
+
+                if (parts[0].trim().toLowerCase() === currentPass1.trim().toLowerCase()) {
+                    USER_LINKS.v2ray = parts[1] || "";
+                    USER_LINKS.singbox = parts[2] || "";
+                    USER_LINKS.all = parts[3] || "";
+                    userFound = true;
+                    break;
+                }
+            } catch (e) { }
+        }
+
+        if (userFound) {
+            const verifyWrapper = document.getElementById('verify-subs-wrapper');
+            if (verifyWrapper) verifyWrapper.style.display = 'none';
+
+            const linksArea = document.getElementById('links-area');
+            if (linksArea) {
+                linksArea.style.opacity = '0';
+                linksArea.style.display = 'grid'; 
+                setTimeout(() => {
+                    linksArea.style.transition = 'opacity 0.5s ease';
+                    linksArea.style.opacity = '1';
+                }, 50);
+            }
+        } else {
+            alert("پروفایل اشتراک شما در سیستم یافت نشد.");
+            if (btnVerify) {
+                const titleSpan = btnVerify.querySelector('.link-title');
+                if (titleSpan) titleSpan.innerHTML = "بررسی و دریافت اشتراک‌ها";
+                btnVerify.style.opacity = "1";
+                btnVerify.style.pointerEvents = "auto";
+            }
+        }
+    } catch (err) {
+        alert("خطا در بارگذاری اطلاعات گیت‌هاب!");
+        if (btnVerify) {
+            const titleSpan = btnVerify.querySelector('.link-title');
+            if (titleSpan) titleSpan.innerHTML = "بررسی و دریافت اشتراک‌ها";
+            btnVerify.style.opacity = "1";
+            btnVerify.style.pointerEvents = "auto";
+        }
+    }
+}
+
+// ----------------------------------------------------
+// توابع ارتباط با ورکر کلودفلر و محاسبه چرخش واقعی نیم‌دایره
+// ----------------------------------------------------
+async function getAndDecryptData() {
+    try {
+        const response = await fetch(DYNAMIC_WORKER_URL, {
+            method: 'GET',
+            mode: 'cors',
+            headers: { 'Accept': 'text/plain' }
+        });
+        const rawResponseText = await response.text();
+        if (!response.ok) throw new Error(rawResponseText || `خطای سرور با کد ${response.status}`);
+        if (rawResponseText.startsWith("API-Error:") || rawResponseText.startsWith("Worker-Error:")) throw new Error(rawResponseText);
+
+        const hexString = binaryToString(rawResponseText.trim());
+        const encryptedArray = hexToBytes(hexString);
+        const key = await getCryptoKey(SECRET_PASSWORD);
+        const iv = new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+
+        const decryptedBuffer = await window.crypto.subtle.decrypt({ name: "AES-GCM", iv: iv }, key, encryptedArray);
+        const dec = new TextDecoder();
+        const [requests, events] = dec.decode(decryptedBuffer).split('|');
+
+        const reqCount = parseInt(requests) || 0;
+        const eventCount = parseInt(events) || 0;
+        
+        const reqGB = (reqCount / 100000) * 6;
+        const eventGB = (eventCount / 200000) * 12;
+
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('dashboard').style.display = 'block';
+        
+        document.getElementById('req-val').innerText = reqGB.toFixed(2) + " GB";
+        document.getElementById('event-val').innerText = eventGB.toFixed(2) + " GB";
+        
+        // محاسبه میزان درصد مصرفی (بین 0 تا 1)
+        const reqPercentage = Math.min(reqGB / 6, 1); 
+        const eventPercentage = Math.min(eventGB / 12, 1);
+
+        // فرمول اصلاح شده دوران مستقیم روی نیم‌دایره:
+        // مقدار اولیه نیم‌دایره 220 است. برای پر شدن راست‌گرد، مقدار مصرف را از 220 کم می‌کنیم.
+        document.getElementById('req-circle').style.strokeDashoffset = 220 - (reqPercentage * 220);
+        document.getElementById('event-circle').style.strokeDashoffset = 220 - (eventPercentage * 220);
+
+    } catch (error) {
+        document.getElementById('loading').innerHTML = `
+            <span style="color:#f85149; font-weight:bold;">خطا در ارتباط با سرور کلودفلر!</span><br>
+            <small style="color:#aaa; display:block; margin-top:5px; direction:ltr;">${error.message}</small>
+            <br><button class="login-btn" onclick="logout()">اصلاح اطلاعات / خروج</button>
+        `;
+    }
+}
+
+// کپی لینک کانکشن
+function copyDynamicLink(type) {
+    const link = USER_LINKS[type];
+    if (!link) { alert("لینک اشتراکی تعریف نشده است. ابتدا روی بررسی و دریافت اشتراک‌ها بزنید!"); return; }
+    navigator.clipboard.writeText(link).then(() => {
+        const toast = document.getElementById('toast');
+        if (toast) {
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2000);
+        } else {
+            alert("لینک کپی شد!");
+        }
+    });
+}
+
+function jumpToAdminQuick() {
+    const cachedAdminPass = localStorage.getItem('worker_admin_pass2');
+    if (cachedAdminPass) {
+        const pass1 = localStorage.getItem('worker_pass1');
+        const cleanPass1 = pass1.toLowerCase().replace(/[^a-z0-9-]/g, '');
+        window.location.href = `https://${cachedAdminPass}.${cleanPass1}.workers.dev/admin`;
+    } else {
+        const adminBox = document.getElementById('quick-admin-box');
+        if (adminBox) adminBox.classList.toggle('show');
+    }
+}
+
+function saveAndGoToAdmin() {
+    const adminPass2 = document.getElementById('quick_admin_pass2').value.trim();
+    if (!adminPass2) { alert("لطفا رمز دوم ادمین را وارد کنید!"); return; }
+    const pass1 = localStorage.getItem('worker_pass1');
+    const cleanPass1 = pass1.toLowerCase().replace(/[^a-z0-9-]/g, '');
+    localStorage.setItem('worker_admin_pass2', adminPass2);
+    window.location.href = `https://${adminPass2}.${cleanPass1}.workers.dev/admin`;
+}
+
+function logout() { localStorage.clear(); location.reload(); }
 
 function binaryToString(binary) {
     let str = '';
-    for (let i = 0; i < binary.length; i += 8) {
-        str += String.fromCharCode(parseInt(binary.substr(i, 8), 2));
+    const cleanBinary = binary.replace(/\s+/g, '');
+    for (let i = 0; i < cleanBinary.length; i += 8) {
+        str += String.fromCharCode(parseInt(cleanBinary.substr(i, 8), 2));
     }
     return str;
+}
+
+function hexToBytes(hex) {
+    let bytes = new Uint8Array(hex.length / 2);
+    for (let i = 0; i < hex.length; i += 2) {
+        bytes[i / 2] = parseInt(hex.substr(i, 2), 16);
+    }
+    return bytes;
 }
 
 async function getCryptoKey(password) {
@@ -291,115 +542,6 @@ async function getCryptoKey(password) {
         keyMaterial, { name: "AES-GCM", length: 256 }, false, ["decrypt"]
     );
 }
-
-// خواندن کد باینری میزان مصرف منابع از لینک اختصاصی داشبورد کاربر
-async function getAndDecryptData() {
-    try {
-        const response = await fetch(DYNAMIC_WORKER_URL);
-        if (!response.ok) throw new Error();
-        
-        const binaryData = await response.text();
-        const hexString = binaryToString(binaryData);
-        const encryptedArray = new Uint8Array(hexString.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
-        const key = await getCryptoKey(SECRET_PASSWORD);
-        const iv = new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
-
-        const decryptedBuffer = await window.crypto.subtle.decrypt({ name: "AES-GCM", iv: iv }, key, encryptedArray);
-        const dec = new TextDecoder();
-        const [requests, events] = dec.decode(decryptedBuffer).split('|');
-
-        const reqCount = parseInt(requests) || 0;
-        const eventCount = parseInt(events) || 0;
-        const reqGB = (reqCount / 100000) * 6;
-        const eventGB = (eventCount / 200000) * 12;
-
-        document.getElementById('loading').style.display = 'none';
-        document.getElementById('dashboard').style.display = 'block';
-        
-        document.getElementById('req-val').innerText = reqGB.toFixed(2) + " GB";
-        document.getElementById('req-circle').style.strokeDashoffset = 220 - (Math.min(reqCount / 100000, 1) * 220);
-        document.getElementById('event-val').innerText = eventGB.toFixed(2) + " GB";
-        document.getElementById('event-circle').style.strokeDashoffset = 220 - (Math.min(eventCount / 200000, 1) * 220);
-    } catch (error) {
-        document.getElementById('loading').innerText = "خطا در بارگذاری اطلاعات مصرف سرور!";
-        document.getElementById('loading').style.color = "#f85149";
-        document.getElementById('loading').innerHTML += `<br><br><button class="login-btn" onclick="logout()">اصلاح اطلاعات</button>`;
-    }
-}
-
-// خواندن لینک دکمه‌های کپی اشتراک بر اساس جستجوی «رمز اول» کاربر در دیتابیس ثابت
-async function fetchCentralLinks() {
-    try {
-        const currentPass1 = localStorage.getItem('worker_pass1'); // ملاک اصلی جستجو: رمز اول
-        const response = await fetch(CENTRAL_LINKS_URL);
-        if (!response.ok) return;
-        
-        const fileContent = await response.text();
-        const chunks = fileContent.split('/'); 
-
-        for (let chunk of chunks) {
-            chunk = chunk.trim();
-            if (!chunk) continue;
-
-            try {
-                const hexString = binaryToString(chunk);
-                const encryptedArray = new Uint8Array(hexString.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
-                const key = await getCryptoKey(SECRET_PASSWORD);
-                const iv = new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
-
-                const decryptedBuffer = await window.crypto.subtle.decrypt({ name: "AES-GCM", iv: iv }, key, encryptedArray);
-                const dec = new TextDecoder();
-                const rawText = dec.decode(decryptedBuffer); 
-
-                const parts = rawText.split('|'); // ساختار باینری: رمز اول|v2ray|singbox|all
-                if (parts[0] === currentPass1) {
-                    USER_LINKS.v2ray = parts[1] || "";
-                    USER_LINKS.singbox = parts[2] || "";
-                    USER_LINKS.all = parts[3] || "";
-                    break;
-                }
-            } catch (e) {
-                // مچ نشدن چانک به معنی تعلق داشتن آن به رمز اولِ یک یوزر دیگر است
-            }
-        }
-    } catch (err) {
-        console.error("خطا در ارتباط با سرور مرکزی توکن‌ها", err);
-    }
-}
-
-function copyDynamicLink(type) {
-    const link = USER_LINKS[type];
-    if (!link) {
-        alert("لینک اشتراکی برای این حساب تعریف نشده یا هنوز لود نشده است.");
-        return;
-    }
-    navigator.clipboard.writeText(link).then(() => {
-        const toast = document.getElementById('toast');
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 2000);
-    });
-}
-
-function jumpToAdminQuick() {
-    const pass1 = localStorage.getItem('worker_pass1');
-    const adminPass2 = localStorage.getItem('worker_admin_pass2');
-    if (pass1 && adminPass2) {
-        window.location.href = `https://${adminPass2}.${pass1}.workers.dev/admin`;
-    } else {
-        const quickBox = document.getElementById('quick-admin-box');
-        quickBox.style.display = quickBox.style.display === 'block' ? 'none' : 'block';
-    }
-}
-
-function saveAndGoToAdmin() {
-    const pass1 = localStorage.getItem('worker_pass1');
-    const quickAdminPass2 = document.getElementById('quick_admin_pass2').value.trim();
-    if (!quickAdminPass2) { alert("لطفا را وارد کنید!"); return; }
-    localStorage.setItem('worker_admin_pass2', quickAdminPass2);
-    window.location.href = `https://${quickAdminPass2}.${pass1}.workers.dev/admin`;
-}
-
-function logout() { localStorage.clear(); location.reload(); }
 </script>
 </body>
 </html>
